@@ -3,15 +3,33 @@
 #include <cctype>
 #include <cstdlib>
 #include <fstream>
+#include <list>
 #include "User.h"
 
 using namespace std;
 
+void Registro_User()
+{
 
+}
+
+void Login_user()
+{
+    string:: iD, password;
+    
+    cout<<"-----Nombre de usuario o ID-----"<<endl;
+    cin>> iD;
+    cout<<"Password"<<endl;
+    cin >>password;
+    
+    for(int i=0; i<User.size; i++)
+
+}
 
 int main()
     {
 
+        list <User> users;
         char login=0;
         int lm=0;
         bool rep= true;
