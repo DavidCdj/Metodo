@@ -13,7 +13,7 @@ void Registro_User()
 
 }
 
-void Login_user()
+void Login_user(list <Users> user1)
 {
     string:: iD, password;
     
@@ -22,9 +22,18 @@ void Login_user()
     cout<<"Password"<<endl;
     cin >>password;
     
-    for(int i=0; i<User.size; i++)
+    for(int i=0; i<user1.size(); i++)
+    {
+        if(iD==user1[i].getname || iD==user1[i].getiD)
+        {
+            
+        }
+        else
+        cout<<"Usuario no encontrado, introduzca correctamente  su usuario"<<endl;
+    }
 
 }
+//leer archivo para declarar arrayñist y que devuelva el array list de usuarios
 
 int main()
     {
@@ -61,7 +70,7 @@ int main()
                     {
                         system("cls");
 
-                        cout<<"Indtroduce tu nombre o ID"<<endl;
+                        Login_user();
 
                     }
                 break;
