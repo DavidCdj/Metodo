@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1697237768 source:c:\users\david\videos\rutina_gym\main.cpp
+	<iostream>
+	<stdlib.h>
+	<cctype>
+	<cstdlib>
+	<fstream>
+	<vector>
+	"User.h"
+
+1695741803 c:\users\david\videos\rutina_gym\user.h
+	<iostream>
+	<string>
+
+1697229477 source:c:\users\david\videos\rutina_gym\src\user.cpp
+
+1697230327 c:\users\david\videos\rutina_gym\include\user.h
+	<string>
+
