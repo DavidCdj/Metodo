@@ -38,13 +38,14 @@ void Login_user(vector <User> user1)
                 if(password!=user1[i].getPassword())
                 {
                     cout<<"Contrasenia incorrecta, vuleve a introducir tu clave"<<endl;
+                    system("pause");
+                    system("cls");
 
                 }
                 else
                     band=false;
 
-                system("pause");
-                system("cls");
+
 
             }while(band);
             break;
