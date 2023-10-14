@@ -6,15 +6,55 @@
 #include <vector>
 #include "User.h"
 
+#define FILE_NAME "Usuarios.dat" //archivo en forma binaria
+
 using namespace std;
 vector <User> users;
 
 
-/*
+
 void Registro_User()
 {
+        std:: string name, lesiones, enfermedades, password;
+        char condiciontype
+        int peso, altura, id, edad;
+        bool flag=true;
+        cout<<"Bienvenido ingresos sus  datos correctamente"<<endl;
+        do
+        {
+            cout<<"Nombre Completo: "<<endl;
+            getline(cin, name);
 
-}*/
+            cout<<"Edad: "<<endl;
+            cin>>edad;
+
+            cout<<"Altura: "<<endl;
+            cin>>altura;
+
+            cout<<"Peso: "<<endl;
+            cin>>Peso;
+
+            cout<<"Usted presenta alguna lession o un enfermedad cardiovascular? Y/N"
+            cin>> condiciontype;
+
+            if(condiciontype=='Y' || condiciontype== 'y')
+
+                    {
+                        cout<<"Que tipo de enfermedad presenta?"<<endl;
+                        cout<<"Respiratoria [1]: \n"<<"Cardiovscular [2]: \n"<<endl;
+                    }
+
+
+
+
+
+
+        }while(flag);
+
+
+
+
+}
 
 void Login_user()
 {
@@ -118,7 +158,7 @@ int main()
         bool reps=true;
         //prueba de agregar usuarios
         for(int i=0; i<5;i++){
-        User us("David Carmona", i, "ZVesda2125", "si", "sas", 123, 122);
+        User us("David Carmona", i, "ZVesda2125", "si", "sas", 123, 122, 24);
 
         users.push_back(us);
         }
@@ -150,7 +190,7 @@ int main()
                 case 50:
                     {
                         system("cls");
-                        cout<<"Para registrar un usuario"<<endl;
+                        Registro_User();
                     }
 
                 break;

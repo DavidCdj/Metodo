@@ -8,10 +8,10 @@ class User
     //atributos
     private:
         std:: string name, lesiones, enfermedades, password;
-        int peso, altura, id;
+        int peso, altura, id, edad;
     //metodos
     public:
-        User(std::string, int, std::string, std::string, std::string, int,int); //constructor
+        User(std::string, int, std::string, std::string, std::string, int,int,int); //constructor
 
         void setName(std::string);
         std::string getName();
@@ -34,9 +34,12 @@ class User
         void setAltura(int);
         int getAltura();
 
+        void setEdad(int);
+        int getEdad();
+
 };
 //constructor
-User::User(std::string _name, int _id, std::string _password,  std::string _lessiones, std::string _enfermedades, int _altura, int _peso)
+User::User(std::string _name, int _id, std::string _password,  std::string _lessiones, std::string _enfermedades, int _altura, int _peso, int _edad)
 {
     name=_name;
     id=_id;
@@ -45,6 +48,7 @@ User::User(std::string _name, int _id, std::string _password,  std::string _less
     peso= _peso;
     lesiones = _lessiones;
     enfermedades = _enfermedades;
+    edad= _edad;
 }
 
 void User::setName(std::string _name)
@@ -112,6 +116,15 @@ void User::setAltura(int _altura)
     altura=_altura;
 }
 int User::getAltura()
+{
+    return altura;
+}
+
+void User::setEdad(int _altura)
+{
+    altura=_altura;
+}
+int User::getEdad()
 {
     return altura;
 }
