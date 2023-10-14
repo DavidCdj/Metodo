@@ -7,6 +7,7 @@
 #include "User.h"
 
 using namespace std;
+vector <User> users;
 
 
 /*
@@ -15,7 +16,7 @@ void Registro_User()
 
 }*/
 
-void Login_user(vector <User> user1)
+void Login_user()
 {
     string nombre;
     string password;
@@ -27,15 +28,15 @@ void Login_user(vector <User> user1)
     getline(cin, nombre);
 
 
-    for(int i=0; i<user1.size();i++)
+    for(int i=0; i<users.size();i++)
     {
-        if(nombre==user1[i].getName()  )
+        if(nombre==users[i].getName()  )
         {
             do
             {
                 cout<<"Password"<<endl;
                 getline(cin, password);
-                if(password!=user1[i].getPassword())
+                if(password!=users[i].getPassword())
                 {
                     cout<<"Contrasenia incorrecta, vuleve a introducir tu clave"<<endl;
                     system("pause");
@@ -51,7 +52,7 @@ void Login_user(vector <User> user1)
             break;
         }
 
-        if(i==user1.size()-1)
+        if(i==users.size()-1)
         {
             cout<<"Usuario no encontrado"<<endl;
             system("pause");
@@ -93,13 +94,26 @@ char Menu_Inicio(char logs)
 
 }
 
+void leerAarchivo()
+{
+
+}
+
+void CrearArchivo()
+{
+
+
+
+}
+
+
 
 
 //leer archivo para declarar arrayñist y que devuelva el array list de usuarios
 
 int main()
     {
-        vector <User> users;
+
         char login=0;
         bool reps=true;
         //prueba de agregar usuarios
@@ -129,7 +143,7 @@ int main()
                 case 49:
                     {
                         system("cls");
-                        Login_user(users);
+                        Login_user();
                     }
                 break;
 
