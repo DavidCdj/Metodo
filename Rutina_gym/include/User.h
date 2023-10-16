@@ -8,10 +8,11 @@ class User
     //atributos
     private:
         std:: string name, lesiones, enfermedades, password;
-        int peso, altura, id, edad;
+        int  id, edad;
+        float peso, altura;
     //metodos
     public:
-        User(std::string, int, std::string, std::string, std::string, int,int,int); //constructor
+        User(std::string, int, std::string, std::string, std::string, float, float,int); //constructor
 
         void setName(std::string);
         std::string getName();
@@ -28,18 +29,18 @@ class User
         void setPassword(std::string);
         std::string getPassword();
 
-        void setPeso(int);
-        int getPeso();
+        void setPeso(float);
+        float getPeso();
 
-        void setAltura(int);
-        int getAltura();
+        void setAltura(float);
+        float getAltura();
 
         void setEdad(int);
         int getEdad();
 
 };
 //constructor
-User::User(std::string _name, int _id, std::string _password,  std::string _lessiones, std::string _enfermedades, int _altura, int _peso, int _edad)
+User::User(std::string _name, int _id, std::string _password,  std::string _lessiones, std::string _enfermedades, float _altura, float _peso, int _edad)
 {
     name=_name;
     id=_id;
@@ -101,23 +102,23 @@ std::string User::getPassword()
     return password;
 }
 
-void User::setPeso(int _peso)
+void User::setPeso(float _peso)
 {
     peso=_peso;
 }
 
-int User::getPeso()
+float User::getPeso()
 {
     return peso;
 }
 
-void User::setAltura(int _altura)
+void User::setAltura(float _altura)
 {
     altura=_altura;
 }
-int User::getAltura()
+float User::getAltura()
 {
-    return altura;
+    float altura;
 }
 
 void User::setEdad(int _altura)
