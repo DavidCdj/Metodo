@@ -4,11 +4,34 @@
 #include <cstdlib>
 #include <fstream>
 #include <vector>
+#include <string.h>
 #include "User.h"
 #define FILE_NAME "Usuarios.dat" //archivo en forma binaria
 
 using namespace std;
 vector <User> users;
+
+void GuardarArchivoBin(User uss)
+{
+   // User u;
+
+    ofstream archivo("User_dat.dat", ios::binary);
+    /*str
+    strcpy(uss.getName(), uss.getName());
+    strcpy(uss.getID(), uss.getID());
+    strcpy(uss.getPassword, uss.getPassword());
+    strcpy(uss.lesiones, uss.getLesiones());
+    strcpy(uss.enfermedades, uss.getEnfermedades());
+    strcpy(uss.altura, uss.getAltura());
+    strcpy(uss.peso, uss.getPeso());
+    strcpy(uss.edad, uss.getEdad());
+    strcpy(uss.imc, uss.getImc());*/
+
+    //strcpy();
+    archivo.write((char*)&uss, sizeof(User));
+
+
+}
 
 bool OnlyLetters(string name_user) //recorre el string  que busca si introdujo solo letras, en casi de que si devuelve false.
 {
@@ -56,7 +79,7 @@ bool OnlyNums(string numeros)//validacion de entrada de solo numeros
     cin.clear();
     return flagss;
 }
-
+/*
 void Imprimir_usuario()
 {
     for(int i=0; i<users.size();i++)
@@ -66,7 +89,7 @@ void Imprimir_usuario()
     }
 
 
-}
+}*/
 
 
 
@@ -181,8 +204,9 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
             id=users.size();
             User us(name, id,password, lesiones, enfermedades, stoi(altura), stoi(peso), stoi(edad), imc);
             users.push_back(us);
-            Imprimir_usuario();
-            system("pause");
+            //Imprimir_usuario();
+            //system("pause");
+            GuardarArchivoBin(us);
 
 }
 
@@ -266,15 +290,20 @@ char Menu_Inicio()
 
 void leerAarchivo()
 {
+    User userarch=User();
+    ifstream archivo("User_dat.dat", ios::binary);
 
+    archivo.read((char*)&userarch, sizeof(User));
+
+    cout<<"Nombre "<< userarch.getName()<<endl;
+    cout<<"edad "<< userarch.getEdad()<<endl;
+
+
+
+
+    system("pause");
+    archivo.close();
 }
-
-void CrearArchivo()
-{
-
-}
-
-//leer archivo para declarar arrayñist y que devuelva el array list de usuarios
 
 int main()
     {
@@ -282,11 +311,17 @@ int main()
         //char login=0;
         bool reps=true;
         //prueba de agregar usuarios
-        for(int i=0; i<5;i++)
+        /*for(int i=0; i<5;i++)
             {
                 User us("David Carmona", i, "ZVesda2125", "si", "sas", 123, 122, 24, 23);
                 users.push_back(us);
-            }
+                GuardarArchivoBin(us);
+            }*/
+            leerAarchivo();
+            //cout<<users[2].getName()<<endl;
+            //cout<<users[1].getName();
+            system("pause");
+
 
 
     do{
@@ -319,7 +354,3 @@ int main()
         while(reps);
 
     }
-
-
-
-

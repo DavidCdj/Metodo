@@ -17,15 +17,17 @@
 1697230327 c:\users\david\videos\rutina_gym\include\user.h
 	<string>
 
-1697427763 source:c:\users\david\videos\repogitprograma\metodo\rutina_gym\main.cpp
+1697490923 source:c:\users\david\videos\repogitprograma\metodo\rutina_gym\main.cpp
 	<iostream>
 	<stdlib.h>
 	<cctype>
 	<cstdlib>
 	<fstream>
 	<vector>
+	<string.h>
 	"User.h"
 
-1697425092 c:\users\david\videos\repogitprograma\metodo\rutina_gym\include\user.h
+1697484773 c:\users\david\videos\repogitprograma\metodo\rutina_gym\include\user.h
 	<string>
+	<iostream>
 
