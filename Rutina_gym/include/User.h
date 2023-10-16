@@ -9,10 +9,10 @@ class User
     private:
         std:: string name, lesiones, enfermedades, password;
         int  id, edad;
-        float peso, altura;
+        float peso, altura, imc;
     //metodos
     public:
-        User(std::string, int, std::string, std::string, std::string, float, float,int); //constructor
+        User(std::string, int, std::string, std::string, std::string, float, float,int, float); //constructor
 
         void setName(std::string);
         std::string getName();
@@ -38,9 +38,12 @@ class User
         void setEdad(int);
         int getEdad();
 
+        void setImc(float);
+        float getImc();
+
 };
 //constructor
-User::User(std::string _name, int _id, std::string _password,  std::string _lessiones, std::string _enfermedades, float _altura, float _peso, int _edad)
+User::User(std::string _name, int _id, std::string _password,  std::string _lessiones, std::string _enfermedades, float _altura, float _peso, int _edad, float _imc)
 {
     name=_name;
     id=_id;
@@ -50,6 +53,7 @@ User::User(std::string _name, int _id, std::string _password,  std::string _less
     lesiones = _lessiones;
     enfermedades = _enfermedades;
     edad= _edad;
+    imc= _imc;
 }
 
 void User::setName(std::string _name)
@@ -118,7 +122,7 @@ void User::setAltura(float _altura)
 }
 float User::getAltura()
 {
-    float altura;
+     return altura;
 }
 
 void User::setEdad(int _altura)
@@ -128,5 +132,14 @@ void User::setEdad(int _altura)
 int User::getEdad()
 {
     return altura;
+}
+
+void User::setImc(float _imc)
+{
+    imc=_imc;
+}
+float User::getImc()
+{
+     return imc;
 }
 #endif // USER_H
