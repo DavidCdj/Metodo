@@ -10,19 +10,44 @@
 #define FILE_NAME "Usuarios.dat" //archivo en forma binaria
 
 using namespace std;
+
 vector <User> users;
+
+void leerAarchivo()
+{
+    FILE* archivo = fopen("Usuarios.bin", "rb");
+    std::vector <User> usuarioatemp;
+    ;
+
+    while(!feof(archivo))
+    {
+        User ustemp;
+        fread(&ustemp, sizeof(User), 1, archivo);
+        usuarioatemp.push_back(ustemp);
+
+    }
+    fclose(archivo);
+
+    /*for(int i=0; i<users.size(); i++)
+    {
+        cout<< users[i].getName()<< " "<< users[i].getPeso()<<endl;
+    }*/
+    system("pause");
+
+}
 
 void GuardarArchivoBin()
 {
-    FILE *f;
-    f=fopen("User_data.test", "wb");
+    FILE* archivo = fopen("Usuarios.bin", "wb");
 
+    for(int i=0; i<users.size();i++)
+    {
+        fwrite(&users[i], sizeof(User), 1, archivo);
+    }
+    fclose(archivo);
 
 }
-void leerAarchivo()
-{
 
-}
 
 bool OnlyLetters(string name_user) //recorre el string  que busca si introdujo solo letras, en casi de que si devuelve false.
 {
@@ -198,6 +223,7 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
             //Imprimir_usuario();
             //system("pause");
             GuardarArchivoBin();
+            //leerAarchivo();
 
 }
 
@@ -275,12 +301,16 @@ int main()
     {
         bool reps=true;
         //prueba de agregar usuarios
-        for(int i=0; i<5;i++)
+        /*for(int i=0; i<5;i++)
             {
                 User us("David Carmona ", i, " ZVesda2125", "si", "sas", 123, 122, 24, 23);
                 users.push_back(us);
-            }
-            GuardarArchivoBin();
+            }*/
+
+            //GuardarArchivoBin();
+            leerAarchivo();
+
+
             system("pause");
 
     do{
