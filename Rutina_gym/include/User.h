@@ -1,6 +1,7 @@
 #ifndef USER_H
 #define USER_H
 #include <string>
+#include <iostream>
 
 
 class User
@@ -13,7 +14,7 @@ class User
     //metodos
     public:
         User(std::string, int, std::string, std::string, std::string, float, float,int, float); //constructor
-
+        User();
         void setName(std::string);
         std::string getName();
 
@@ -41,6 +42,8 @@ class User
         void setImc(float);
         float getImc();
 
+        void Imprimir();
+
 };
 //constructor
 User::User(std::string _name, int _id, std::string _password,  std::string _lessiones, std::string _enfermedades, float _altura, float _peso, int _edad, float _imc)
@@ -54,6 +57,10 @@ User::User(std::string _name, int _id, std::string _password,  std::string _less
     enfermedades = _enfermedades;
     edad= _edad;
     imc= _imc;
+}
+User::User()
+{
+
 }
 
 void User::setName(std::string _name)
