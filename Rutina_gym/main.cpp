@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdio.h>
 #include <stdlib.h>
 #include <cctype>
 #include <cstdlib>
@@ -11,25 +12,15 @@
 using namespace std;
 vector <User> users;
 
-void GuardarArchivoBin(User uss)
+void GuardarArchivoBin()
 {
-   // User u;
+    FILE *f;
+    f=fopen("User_data.test", "wb");
 
-    ofstream archivo("User_dat.dat", ios::binary);
-    /*str
-    strcpy(uss.getName(), uss.getName());
-    strcpy(uss.getID(), uss.getID());
-    strcpy(uss.getPassword, uss.getPassword());
-    strcpy(uss.lesiones, uss.getLesiones());
-    strcpy(uss.enfermedades, uss.getEnfermedades());
-    strcpy(uss.altura, uss.getAltura());
-    strcpy(uss.peso, uss.getPeso());
-    strcpy(uss.edad, uss.getEdad());
-    strcpy(uss.imc, uss.getImc());*/
 
-    //strcpy();
-    archivo.write((char*)&uss, sizeof(User));
-
+}
+void leerAarchivo()
+{
 
 }
 
@@ -206,12 +197,9 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
             users.push_back(us);
             //Imprimir_usuario();
             //system("pause");
-            GuardarArchivoBin(us);
+            GuardarArchivoBin();
 
 }
-
-
-
 
 void Login_user()
 {
@@ -227,11 +215,8 @@ void Login_user()
             flag=OnlyLetters(nombre);
         }while(flag);
 
-
-
     for(int i=0; i<users.size();i++)
     {
-
         if(nombre==users[i].getName()  )
         {
             do
@@ -267,10 +252,8 @@ char Menu_Inicio()
         do
             {
                 system("cls");
-
                 cout<<"--------Rutina de Gym--------\n\n\r"<<endl;
                 cout<<"1.- Usuario existente\n"<< "2.- nuevo usuario\n"<<"3.-salir\n"<<endl;
-                //cin.clear();
                 cin>>logs;
                 cin.ignore();
                 lm=(int)logs;
@@ -288,41 +271,17 @@ char Menu_Inicio()
     return logs;
 }
 
-void leerAarchivo()
-{
-    User userarch=User();
-    ifstream archivo("User_dat.dat", ios::binary);
-
-    archivo.read((char*)&userarch, sizeof(User));
-
-    cout<<"Nombre "<< userarch.getName()<<endl;
-    cout<<"edad "<< userarch.getEdad()<<endl;
-
-
-
-
-    system("pause");
-    archivo.close();
-}
-
 int main()
     {
-
-        //char login=0;
         bool reps=true;
         //prueba de agregar usuarios
-        /*for(int i=0; i<5;i++)
+        for(int i=0; i<5;i++)
             {
-                User us("David Carmona", i, "ZVesda2125", "si", "sas", 123, 122, 24, 23);
+                User us("David Carmona ", i, " ZVesda2125", "si", "sas", 123, 122, 24, 23);
                 users.push_back(us);
-                GuardarArchivoBin(us);
-            }*/
-            leerAarchivo();
-            //cout<<users[2].getName()<<endl;
-            //cout<<users[1].getName();
+            }
+            GuardarArchivoBin();
             system("pause");
-
-
 
     do{
          switch (Menu_Inicio())

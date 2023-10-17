@@ -149,18 +149,4 @@ float User::getImc()
 {
      return imc;
 }
-/*
-void Imprimir()
-{
-    cout<<"Name "<<name<<endl;
-    cout<<"id "<<id<<endl;
-    //cout<<"pass"<<password<<endl;
-    cout<<"altura "<<altura<<endl;
-    cout<<"Peso "<<peso<<endl;
-    cout<<"Lesiones "<<lesiones<<endl;
-    cout<<"Enfermedades "<<enfermedades<<endl;
-    cout<<"edad "<<edad<<endl;
-    cout<<"IMC "<<imc<<endl;
-
-}*/
 #endif // USER_H
