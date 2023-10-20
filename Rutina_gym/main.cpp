@@ -22,8 +22,10 @@ void saveUsersToFile(std::vector<User>& use, const char* filename)
         outfile.write((char*)&n, sizeof(int));
         for (User& user : use)
         {
-       // error: lvalue required as unary '&' operand|
+
+            //outfile.write((char*)&user, sizeof(User));
             int id= user.getID();
+            cout<<"ptmd"<<endl;
             std::string name=user.getName();
             std::string password=user.getPassword();
             std::string lesiones=user.getLesiones();
@@ -56,7 +58,9 @@ std::vector<User> readUsersFromFile(const char* filename)
     if (infile.is_open())
     {
         int n;
+        cout<<"error"<<endl;
         infile.read((char*)&n, sizeof(int));
+        cout<<"xd"<<n<<endl;
         for (int i = 0; i < n; i++)
         {
 
@@ -84,7 +88,10 @@ std::vector<User> readUsersFromFile(const char* filename)
 
 
             users.push_back(user);
-            cout<<"error"<<endl;
+            //buffer(clear);
+
+            cout<<"error"<<users[0].getEdad()<<"xD"<<endl;
+
         }
         infile.close();
     }
