@@ -8,12 +8,12 @@ class User
 {
     //atributos
     private:
-        std:: string name, lesiones, enfermedades, password;
+        std:: string name, lesiones, enfermedades, password,sexo;
         int  id, edad;
-        float peso, altura, imc;
+        float peso, altura;
     //metodos
     public:
-        User(std::string, int, std::string, std::string, std::string, float, float,int, float); //constructor
+        User(std::string, int, std::string, std::string, std::string, float, float, float, std::string); //constructor
         User();
         void setName(std::string);
         std::string getName();
@@ -36,17 +36,18 @@ class User
         void setAltura(float);
         float getAltura();
 
-        void setEdad(int);
-        int getEdad();
+        void setEdad(float);
+        float getEdad();
 
-        void setImc(float);
-        float getImc();
+        void setSexo(std::string);
+        std::string getSexo();
 
-        void Imprimir();
+        //void Imprimir();
 
 };
 //constructor
-User::User(std::string _name, int _id, std::string _password,  std::string _lessiones, std::string _enfermedades, float _altura, float _peso, int _edad, float _imc)
+User::User(std::string _name, int _id, std::string _password,  std::string _lessiones,
+           std::string _enfermedades, float _altura, float _peso, float _edad,  std::string _sexo)
 {
     name=_name;
     id=_id;
@@ -56,7 +57,7 @@ User::User(std::string _name, int _id, std::string _password,  std::string _less
     lesiones = _lessiones;
     enfermedades = _enfermedades;
     edad= _edad;
-    imc= _imc;
+    sexo= _sexo;
 }
 User::User()
 {
@@ -132,21 +133,22 @@ float User::getAltura()
      return altura;
 }
 
-void User::setEdad(int _altura)
+void User::setEdad(float _edad)
 {
-    altura=_altura;
+    edad=_edad;
 }
-int User::getEdad()
+float User::getEdad()
 {
-    return altura;
+    return edad;
 }
 
-void User::setImc(float _imc)
+void User::setSexo(std::string _sexo)
 {
-    imc=_imc;
+    sexo=_sexo;
 }
-float User::getImc()
+std::string User::getSexo()
 {
-     return imc;
+     return sexo;
 }
+
 #endif // USER_H
