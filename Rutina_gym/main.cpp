@@ -19,13 +19,11 @@ void saveUsersToFile(std::vector<User>& use, const char* filename)
     if (outfile.is_open())
     {
         int n = use.size();
-        outfile.write((char*)&n, sizeof(int));
+        //outfile.write((char*)&n, sizeof(int));
         for (User& user : use)
         {
-
-            //outfile.write((char*)&user, sizeof(User));
+       // error: lvalue required as unary '&' operand|
             int id= user.getID();
-            cout<<"ptmd"<<endl;
             std::string name=user.getName();
             std::string password=user.getPassword();
             std::string lesiones=user.getLesiones();
@@ -33,7 +31,7 @@ void saveUsersToFile(std::vector<User>& use, const char* filename)
             float altura=user.getAltura();
             float peso=user.getPeso();
             int edad=user.getEdad();
-            float imc=user.getImc();
+            std::string sexo=user.getSexo();
 
             outfile.write((char*)&id, sizeof(int));
             outfile.write((char*)&name, sizeof(std::string));
@@ -43,7 +41,7 @@ void saveUsersToFile(std::vector<User>& use, const char* filename)
             outfile.write((char*)&altura, sizeof(float));
             outfile.write((char*)&peso, sizeof(float));
             outfile.write((char*)&edad, sizeof(int));
-            outfile.write((char*)&imc, sizeof(float));
+            outfile.write((char*)&sexo, sizeof(std::string));
         }
         outfile.close();
     }
@@ -58,17 +56,15 @@ std::vector<User> readUsersFromFile(const char* filename)
     if (infile.is_open())
     {
         int n;
-        cout<<"error"<<endl;
-        infile.read((char*)&n, sizeof(int));
-        cout<<"xd"<<n<<endl;
-        for (int i = 0; i < n; i++)
+        //infile.read((char*)&n, sizeof(int));
+        for (int i = 0; i < 4; i++)
         {
 
             int edad,id;
             //std::string id;
 
             float altura, peso, imc;
-            std::string name, password, lesiones, enfermedades;
+            std::string name, password, lesiones, enfermedades,sexo;
             infile.read((char*)&id, sizeof(int));
             //infile.getline(id, sizeof(std::string));
             infile.read((char*)&name, sizeof(std::string));
@@ -78,123 +74,136 @@ std::vector<User> readUsersFromFile(const char* filename)
             infile.read((char*)&altura, sizeof(float));
             infile.read((char*)&peso, sizeof(float));
             infile.read((char*)&edad, sizeof(int));
-            infile.read((char*)&imc, sizeof(float));
-            cout<< name<<id<<password<<lesiones<<enfermedades<<altura<<peso<<edad<<imc<<endl;
-            cout<<edad;
-            system("pause");
-            cout<<"error"<<endl;
-            User user(name, id, password, lesiones, enfermedades, altura, peso, edad, imc);
+            infile.read((char*)&sexo, sizeof(std::string));
+            cout<< name<<id<<password<<lesiones<<enfermedades<<altura<<peso<<edad<<sexo<<endl;
+
+
+            User user(name, id, password, lesiones, enfermedades, altura, peso, edad, sexo);
             cout<<"error"<<endl;
 
 
             users.push_back(user);
-            //buffer(clear);
-
-            cout<<"error"<<users[0].getEdad()<<"xD"<<endl;
-
+            cout<<"error"<<endl;
+            cout<<i<<"\n"<<endl;
         }
         infile.close();
     }
 }
-
-
-
-bool OnlyLetters(string name_user) //recorre el string  que busca si introdujo solo letras, en casi de que si devuelve false.
+void MostrarDatos(User u)
 {
-    bool flagss;
-    int conta=0;
-    int lm=0;
-    for(int i=0; i<name_user.size();i++)
-    {
-        lm=(int)name_user[i];
-        if(((lm<65||lm>90) && (lm<97 || lm>122) ) && lm!=32 && (lm<160 || lm>165) )
-            conta++;
-    }
-
-    if(conta>0)
-    {
-        cout<<"Introduzca solo letras"<<endl;
-        system("pause");
-        system("cls");
-        flagss=true;
-    }
-    else flagss=false;
-    return flagss;
+            std::cout<<"Tu informacion es la siguiente: "<<std::endl;
+            std::cout<<"Nombre:  "<< u.getName() <<std::endl;
+            std::cout<<"Edad:  "<<u.getEdad() <<std::endl;
+            std::cout<<"Peso:  "<<u.getPeso()<<std::endl;
+            std::cout<<"Altura:  "<<u.getAltura()<<std::endl;
+            std::cout<<"Sexo:  "<<u.getSexo()<<std::endl;
+            std::cout<<"Lesiones:  "<<u.getLesiones()<<std::endl;
+            std::cout<<"Enfermedades:  "<<u.getEnfermedades()<<std::endl;
+            std::cout<<"IMC: "<< (u.getPeso()/(u.getAltura()*u.getAltura()) )<<std::endl;
 }
 
 
-bool OnlyNums(string numeros)//validacion de entrada de solo numeros
+
+string OnlyLetters(string tipovalor) //recorre el string  que busca si introdujo solo letras, en casi de que si devuelve false.
+{
+    bool flagss;
+    int conta;
+    int lm=0;
+    string name;
+    system("cls");
+    do{
+            conta=0;
+
+            cout<<tipovalor<<" de usuario: "<<endl;
+            getline(cin, name);
+            for(int i=0; i<name.size();i++)
+            {
+                lm=(int)name[i];
+                if(((lm<65||lm>90) && (lm<97 || lm>122) ) && lm!=32 && (lm<160 || lm>165) )
+                conta++;
+            }
+            if(conta>0)
+            {
+                cout<<"Introduzca solo letras"<<endl;
+                system("pause");
+                system("cls");
+                flagss=true;
+            }
+            else flagss=false;
+
+    }while(flagss);
+
+            return name;
+}
+
+
+float OnlyNums(string tipodato)//validacion de entrada de solo numeros
 {
     bool flagss=true;
     int conta=0;
     int sd=0;
-    for(int i=0; i<numeros.size();i++)
-    {
-        sd=(int)numeros[i];
-        if( (sd<48 || sd>57) && sd!=46 )
-                conta++;
-    }
-    if (conta>0)
-    {
-        cout<<"Introduzca solo numeros"<<endl;
-        system("pause");
-        system("cls");
-        flagss=true;
-    }
-     else flagss=false;
+    string numeros;
+    system("cls");
+   // float valor
+    do{
+            conta=0;
+        cout<<tipodato<<" de usuario: "<<endl;
+        getline(cin,numeros);
+        for(int i=0; i<numeros.size();i++)
+        {
+            sd=(int)numeros[i];
+            if( (sd<48 || sd>57) && sd!=46 )
+                    conta++;
+        }
+        if (conta>0)
+        {
+            cout<<"Introduzca solo numeros"<<endl;
+            system("pause");
+            system("cls");
+            flagss=true;
+        }
+         else flagss=false;
+    }while(flagss);
     cin.clear();
-    return flagss;
+    return stoi(numeros);
 }
+
+
 
 void Registro_User() //funcion para registrar usuario donde pedira sus datos
 {
-        std:: string name, lesiones, enfermedades, password, peso, altura, edad, cpassword;
-        char condiciontype;
-        int  id;
-        float imc;
+        std:: string name, lesiones, enfermedades, password,  cpassword,sexo;
+        char condiciontype, sex;
+        int  id,edad;
+        float peso, altura;
         bool flag;
-            do{
-                cout<<"----------Bienvenido----------\n --Ingresa tus  datos correctamente--"<<endl;
-                cout<<"Nombre de Usuario: "<<endl;
-                getline(cin, name);
-            }while(OnlyLetters(name));
+        system("pause");
+        cout<<"----------Bienvenido----------\n --Ingresa tus  datos correctamente--"<<endl;
+
+        name=OnlyLetters("Nombre");
+        edad=(int)OnlyNums("Edad");
+        peso=OnlyNums("Peso");
+        altura=OnlyNums("Altura");
+        do{
+                cout<<"Ingresa tu sexo: \n [H]Hombre \n [M]Mujer "<<endl;
+                cin>>sex;
+                cin.ignore();
+                if( tolower(sex)!='h' && tolower(sex)!='m')
+                {
+                    cout<<"Ingrese un sexo valido"<<endl;
+                    system("pause");
+                    flag=true;
+                }
+                else flag=false;
+        }while(flag);
 
             do{
-                system("cls");
-                cout<<"----------Bienvenido----------\n --Ingresa tus  datos correctamente--"<<endl;
-                cout<<"Nombre de Usuario: \n"<<name<<endl;
-                cout<<"Edad: "<<endl;
-                cin>>edad;
-            }while(OnlyNums(edad));
-
-            do{
-                system("cls");
-                cout<<"----------Bienvenido----------\n --Ingresa tus  datos correctamente--"<<endl;
-                cout<<"Nombre de Usuario: \n"<<name<<endl;
-                cout<<"Edad: \n"<<edad<<endl;
-                cout<<"Altura: "<<endl;
-                cin>>altura;
-            }while(OnlyNums(altura));
-
-
-            do{
-                system("cls");
-                cout<<"----------Bienvenido----------\n --Ingresa tus  datos correctamente--"<<endl;
-                cout<<"Nombre de Usuario: \n"<<name<<endl;
-                cout<<"Edad: \n"<<edad<<endl;
-                cout<<"Altura: \n"<<altura<<endl;
-                cout<<"Peso: "<<endl;
-                cin>>peso;
-            }while(OnlyNums(peso));
-
-            do{
+                    system("cls");
                     cout<<"Usted presenta alguna lesion o un enfermedad cardiovascular? Y/N"<<endl;
                     //cin.ignore();
                     cin>> condiciontype;
                     cin.ignore();
-                    tolower(condiciontype);
-
-                    if (condiciontype!= 'y' && condiciontype!='n')
+                    if (tolower(condiciontype)!= 'y' && tolower(condiciontype)!='n')
                     {
                         cout<<"ingrese una opcion valida:"<<condiciontype<<endl;
                         system("pause");
@@ -210,11 +219,6 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
                         cout<<"Que tipo de enfermedad presenta?"<<endl;
                         cout<<"Respiratoria [1]: \n"<<"Cardiovscular [2]: \n"<<endl;
                         //cin.ignore(); falta agregar enfermedades
-
-
-
-
-
                         system("pause");
                     }
                 else{
@@ -238,25 +242,16 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
                         }
                         else flag=false;
                 }while(flag);
-
             system("cls");
-            imc=(std::stof(peso))/(std::stof(altura));
-            cout<<"Tu informacion es la siguiente: "<<endl;
-            cout<<"Nombre:  "<<name<<endl;
-            cout<<"Edad:  "<<edad<<endl;
-            cout<<"Peso:  "<<peso<<endl;
-            cout<<"Altura:  "<<altura<<endl;
-            cout<<"Lesiones:  "<<lesiones<<endl;
-            cout<<"Enfermedades:  "<<enfermedades<<endl;
-            cout<<"IMC: "<< imc<<endl;
-
+            id=users.size();
+            User us(name, id,password, lesiones, enfermedades, altura, peso, edad, sexo);
+            users.push_back(us);
+            MostrarDatos(us);
             system("pause");
             system("cls");
             cout<<"Inicie sesion"<<endl;
             system("cls");
-            id=users.size();
-            User us(name, id,password, lesiones, enfermedades, stoi(altura), stoi(peso), stoi(edad), imc);
-            users.push_back(us);
+
 
 }
 
@@ -268,11 +263,7 @@ void Login_user()
     bool flag=true;
    // int size = user1.;
 
-    do{
-            cout<<"-----Nombre de usuario: "<<endl;
-            getline(cin, nombre);
-            flag=OnlyLetters(nombre);
-        }while(flag);
+    nombre=OnlyLetters("Nombre");
 
     for(int i=0; i<users.size();i++)
     {
@@ -317,7 +308,7 @@ char Menu_Inicio()
                 cin.ignore();
                 lm=(int)logs;
                 // se utiliza valores de 49 al 51 porque son valores de 1 al 3 en ascii, para que el usuario no introduzca letras o  simbolos especiales
-                if (lm<49 || lm>51)
+                if (lm<49 || lm>52)
                 {
                     cout<<"ingrese una opcion valida"<<endl;
                     system("pause");
@@ -333,21 +324,13 @@ char Menu_Inicio()
 int main()
     {
         bool reps=true;
-        //prueba de agregar usuarios
         for(int i=0; i<5;i++)
             {
-                User us("David Carmona ", i, " ZVesda2125", "si", "sas", 1, 2, 60, 45);
+                User us("David Carmona ", i, " ZVesda2125", "si", "sas", 1, 2, 60, "h");
                 users.push_back(us);
+
             }
-            saveUsersToFile(users, "usuariosdata.bin");
 
-            readUsersFromFile("usuariosdata.bin");
-
-
-
-
-
-            system("pause");
 
     do{
          switch (Menu_Inicio())
@@ -372,6 +355,14 @@ int main()
                         reps=false;
 
                     }
+                    break;
+
+                case 52:
+                {
+                    saveUsersToFile(users, "usuariosdata.bin");
+                    readUsersFromFile("usuariosdata.bin");
+                    //MostrarDatos(users[0]);
+                }
 
                 break;
             }
