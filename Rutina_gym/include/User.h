@@ -13,7 +13,7 @@ class User
         float peso, altura;
     //metodos
     public:
-        User(std::string, int, std::string, std::string, std::string, float, float, float, std::string); //constructor
+        User(std::string, int, std::string, float, std::string, float, std::string, float, std::string); //constructor
         User();
         void setName(std::string);
         std::string getName();
@@ -46,8 +46,8 @@ class User
 
 };
 //constructor
-User::User(std::string _name, int _id, std::string _password,  std::string _lessiones,
-           std::string _enfermedades, float _altura, float _peso, float _edad,  std::string _sexo)
+User::User(std::string _name, int _id, std::string _password, float _altura,  std::string _lessiones,
+           float _peso, std::string _enfermedades,   float _edad,  std::string _sexo)
 {
     name=_name;
     id=_id;

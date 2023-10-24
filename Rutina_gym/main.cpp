@@ -7,41 +7,39 @@
 #include <vector>
 #include <string.h>
 #include "User.h"
-#define FILE_NAME "Usuarios.dat" //archivo en forma binaria
 
 using namespace std;
-
 vector <User> users;
-void saveUsersToFile(std::vector<User>& use, const char* filename)
-{
 
+void saveUsersToFile(std::vector<User> use, const char* filename)
+{
     std::ofstream outfile(filename, ios::binary);
     if (outfile.is_open())
     {
         int n = use.size();
-        //outfile.write((char*)&n, sizeof(int));
-        for (User& user : use)
+        outfile.write((char*)&n, sizeof(int));
+        for (int i=0; i<n;i++)
         {
        // error: lvalue required as unary '&' operand|
-            int id= user.getID();
-            std::string name=user.getName();
-            std::string password=user.getPassword();
-            std::string lesiones=user.getLesiones();
-            std::string enfermedades=user.getEnfermedades();
-            float altura=user.getAltura();
-            float peso=user.getPeso();
-            int edad=user.getEdad();
-            std::string sexo=user.getSexo();
-
+       //outfile.write((char*)&users, sizeof(User));
+            int id= users[i].getID();
+            std::string name=users[i].getName();
+            std::string password=users[i].getPassword();
+            std::string lesiones=users[i].getLesiones();
+            std::string enfermedades=users[i].getEnfermedades();
+            float altura=users[i].getAltura();
+            float peso=users[i].getPeso();
+            int edad=users[i].getEdad();
+            std::string sexo=users[i].getSexo();
             outfile.write((char*)&id, sizeof(int));
-            outfile.write((char*)&name, sizeof(std::string));
-            outfile.write((char*)&password, sizeof(std::string));
-            outfile.write((char*)&lesiones, sizeof(std::string));
-            outfile.write((char*)&enfermedades, sizeof(std::string));
+            outfile.write((char*)&name, sizeof(string));
+            outfile.write((char*)&password, sizeof(string));
             outfile.write((char*)&altura, sizeof(float));
+            outfile.write((char*)&lesiones, sizeof(string));
             outfile.write((char*)&peso, sizeof(float));
+            outfile.write((char*)&enfermedades, sizeof(string));
             outfile.write((char*)&edad, sizeof(int));
-            outfile.write((char*)&sexo, sizeof(std::string));
+            outfile.write((char*)&sexo, sizeof(string));
         }
         outfile.close();
     }
@@ -49,60 +47,37 @@ void saveUsersToFile(std::vector<User>& use, const char* filename)
 
 // Lee un vector de objetos User de un archivo binario
 
-std::vector<User> readUsersFromFile(const char* filename)
+void readUsersFromFile(const char* filename)
 {
-    std::vector<User> users;
-    std::ifstream infile(filename, ios::binary);
-    if (infile.is_open())
-    {
+    vector<User> usuarios;
+    ifstream infile(filename, std::ios::binary);
+
         int n;
-        //infile.read((char*)&n, sizeof(int));
-        for (int i = 0; i < 4; i++)
+        infile.read((char*)&n, sizeof(int));
+        //usuarios.reserve(n);
+        for (int i = 0; i <n; i++)
         {
 
             int edad,id;
-            //std::string id;
-
             float altura, peso, imc;
             std::string name, password, lesiones, enfermedades,sexo;
             infile.read((char*)&id, sizeof(int));
-            //infile.getline(id, sizeof(std::string));
-            infile.read((char*)&name, sizeof(std::string));
+            infile.read((char*)&name, sizeof(string));
             infile.read((char*)&password, sizeof(std::string));
-            infile.read((char*)&lesiones, sizeof(std::string));
-            infile.read((char*)&enfermedades, sizeof(std::string));
             infile.read((char*)&altura, sizeof(float));
+            infile.read((char*)&lesiones, sizeof(std::string));
             infile.read((char*)&peso, sizeof(float));
+            infile.read((char*)&enfermedades, sizeof(std::string));
             infile.read((char*)&edad, sizeof(int));
-            infile.read((char*)&sexo, sizeof(std::string));
-            cout<< name<<id<<password<<lesiones<<enfermedades<<altura<<peso<<edad<<sexo<<endl;
-
-
-            User user(name, id, password, lesiones, enfermedades, altura, peso, edad, sexo);
-            cout<<"error"<<endl;
-
-
+            infile.read((char*)&sexo, sizeof(string));
+            User user(name, id, password,  altura, lesiones,  peso, enfermedades,   edad, sexo);
             users.push_back(user);
-            cout<<"error"<<endl;
-            cout<<i<<"\n"<<endl;
+            //system("pause");
         }
-        infile.close();
-    }
-}
-void MostrarDatos(User u)
-{
-            std::cout<<"Tu informacion es la siguiente: "<<std::endl;
-            std::cout<<"Nombre:  "<< u.getName() <<std::endl;
-            std::cout<<"Edad:  "<<u.getEdad() <<std::endl;
-            std::cout<<"Peso:  "<<u.getPeso()<<std::endl;
-            std::cout<<"Altura:  "<<u.getAltura()<<std::endl;
-            std::cout<<"Sexo:  "<<u.getSexo()<<std::endl;
-            std::cout<<"Lesiones:  "<<u.getLesiones()<<std::endl;
-            std::cout<<"Enfermedades:  "<<u.getEnfermedades()<<std::endl;
-            std::cout<<"IMC: "<< (u.getPeso()/(u.getAltura()*u.getAltura()) )<<std::endl;
-}
 
-
+    infile.close();
+    //return usuarios;
+}
 
 string OnlyLetters(string tipovalor) //recorre el string  que busca si introdujo solo letras, en casi de que si devuelve false.
 {
@@ -142,13 +117,15 @@ float OnlyNums(string tipodato)//validacion de entrada de solo numeros
     bool flagss=true;
     int conta=0;
     int sd=0;
+    float valor;
     string numeros;
     system("cls");
    // float valor
     do{
             conta=0;
         cout<<tipodato<<" de usuario: "<<endl;
-        getline(cin,numeros);
+        cin>> valor;
+        numeros=to_string(valor);
         for(int i=0; i<numeros.size();i++)
         {
             sd=(int)numeros[i];
@@ -165,7 +142,19 @@ float OnlyNums(string tipodato)//validacion de entrada de solo numeros
          else flagss=false;
     }while(flagss);
     cin.clear();
-    return stoi(numeros);
+    return valor;
+}
+void MostrarDatos(User u)
+{
+            std::cout<<"Tu informacion es la siguiente: "<<std::endl;
+            cout<<"Nombre: "<< u.getName() <<endl;
+            cout<<"Edad:  "<<u.getEdad() <<endl;
+            cout<<"Peso:  "<<u.getPeso()<<endl;
+            cout<<"Altura:  "<<u.getAltura()<<endl;
+            cout<<"Sexoxddd:  "<<u.getSexo()<<endl;
+            cout<<"Lesiones:  "<<u.getLesiones()<<endl;
+            cout<<"Enfermedades:  "<<u.getEnfermedades()<<endl;
+            cout<<"IMC: "<< (u.getPeso()/(u.getAltura()*u.getAltura()) )<<endl;
 }
 
 
@@ -181,7 +170,7 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
         cout<<"----------Bienvenido----------\n --Ingresa tus  datos correctamente--"<<endl;
 
         name=OnlyLetters("Nombre");
-        edad=(int)OnlyNums("Edad");
+        edad=OnlyNums("Edad");
         peso=OnlyNums("Peso");
         altura=OnlyNums("Altura");
         do{
@@ -210,8 +199,10 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
                         flag=true;
                     }
                     else
-                    flag=false;
-
+                    {
+                        flag=false;
+                        sexo=sex;
+                    }
             }while(flag);
 
             if(tolower(condiciontype)== 'y')
@@ -244,13 +235,14 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
                 }while(flag);
             system("cls");
             id=users.size();
-            User us(name, id,password, lesiones, enfermedades, altura, peso, edad, sexo);
+            User us(name, id,password, altura, lesiones, peso, enfermedades,   edad, sexo);
             users.push_back(us);
             MostrarDatos(us);
             system("pause");
             system("cls");
             cout<<"Inicie sesion"<<endl;
-            system("cls");
+            system("pause");
+            saveUsersToFile(users, "usuariosdata.bin");
 
 
 }
@@ -321,15 +313,14 @@ char Menu_Inicio()
     return logs;
 }
 
+
+
 int main()
     {
         bool reps=true;
-        for(int i=0; i<5;i++)
-            {
-                User us("David Carmona ", i, " ZVesda2125", "si", "sas", 1, 2, 60, "h");
-                users.push_back(us);
 
-            }
+            readUsersFromFile("usuariosdata.bin");
+            //system("pause");
 
 
     do{
@@ -359,9 +350,18 @@ int main()
 
                 case 52:
                 {
-                    saveUsersToFile(users, "usuariosdata.bin");
-                    readUsersFromFile("usuariosdata.bin");
-                    //MostrarDatos(users[0]);
+                //saveUsersToFile(users, "usuariosdata.bin");
+                /*int n=users.size();
+                 for(int j=0; j<n;j++)
+                   {
+                       cout<<n;
+                      MostrarDatos(users[j]);
+
+                   }*/
+                   MostrarDatos(users[0]);
+
+
+                    system("pause");
                 }
 
                 break;
