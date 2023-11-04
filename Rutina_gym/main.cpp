@@ -30,7 +30,7 @@ void saveUsersToFile(std::vector<User> use, const char* filename)
             float altura=users[i].getAltura();
             float peso=users[i].getPeso();
             int edad=users[i].getEdad();
-            std::string sexo=users[i].getSexo();
+            char sexo=users[i].getSexo();
             outfile.write((char*)&id, sizeof(int));
             outfile.write((char*)&name, sizeof(string));
             outfile.write((char*)&password, sizeof(string));
@@ -39,7 +39,7 @@ void saveUsersToFile(std::vector<User> use, const char* filename)
             outfile.write((char*)&peso, sizeof(float));
             outfile.write((char*)&enfermedades, sizeof(string));
             outfile.write((char*)&edad, sizeof(int));
-            outfile.write((char*)&sexo, sizeof(string));
+            outfile.write((char*)&sexo, sizeof(char));
         }
         outfile.close();
     }
@@ -60,7 +60,8 @@ void readUsersFromFile(const char* filename)
 
             int edad,id;
             float altura, peso, imc;
-            std::string name, password, lesiones, enfermedades,sexo;
+            char sexo;
+            std::string name, password, lesiones, enfermedades;
             infile.read((char*)&id, sizeof(int));
             infile.read((char*)&name, sizeof(string));
             infile.read((char*)&password, sizeof(std::string));
@@ -69,7 +70,7 @@ void readUsersFromFile(const char* filename)
             infile.read((char*)&peso, sizeof(float));
             infile.read((char*)&enfermedades, sizeof(std::string));
             infile.read((char*)&edad, sizeof(int));
-            infile.read((char*)&sexo, sizeof(string));
+            infile.read((char*)&sexo, sizeof(char));
             User user(name, id, password,  altura, lesiones,  peso, enfermedades,   edad, sexo);
             users.push_back(user);
             //system("pause");
@@ -201,7 +202,6 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
                     else
                     {
                         flag=false;
-                        sexo=sex;
                     }
             }while(flag);
 
@@ -235,7 +235,7 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
                 }while(flag);
             system("cls");
             id=users.size();
-            User us(name, id,password, altura, lesiones, peso, enfermedades,   edad, sexo);
+            User us(name, id,password, altura, lesiones, peso, enfermedades,   edad, sex);
             users.push_back(us);
             MostrarDatos(us);
             system("pause");
