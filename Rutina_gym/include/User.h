@@ -8,12 +8,13 @@ class User
 {
     //atributos
     private:
-        std:: string name, lesiones, enfermedades, password,sexo;
-        int  id, edad;
+        std:: string name, password, lesiones,enfermedades;
+        int  id, edad ;
         float peso, altura;
+        char sexo;
     //metodos
     public:
-        User(std::string, int, std::string, float, std::string, float, std::string, float, std::string); //constructor
+        User(std::string, int, std::string, float, std::string, float, std::string, int, char); //constructor
         User();
         void setName(std::string);
         std::string getName();
@@ -21,7 +22,7 @@ class User
         void setID( int);
         int getID();
 
-        void setLesiones(std:: string);
+        void setLesiones(std::string);
         std::string getLesiones();
 
         void setEnfermedades(std::string);
@@ -36,18 +37,18 @@ class User
         void setAltura(float);
         float getAltura();
 
-        void setEdad(float);
-        float getEdad();
+        void setEdad(int);
+        int getEdad();
 
-        void setSexo(std::string);
-        std::string getSexo();
+        void setSexo(char);
+        char getSexo();
 
         //void Imprimir();
 
 };
 //constructor
 User::User(std::string _name, int _id, std::string _password, float _altura,  std::string _lessiones,
-           float _peso, std::string _enfermedades,   float _edad,  std::string _sexo)
+           float _peso, std::string _enfermedades,   int _edad,  char _sexo)
 {
     name=_name;
     id=_id;
@@ -61,7 +62,6 @@ User::User(std::string _name, int _id, std::string _password, float _altura,  st
 }
 User::User()
 {
-
 }
 
 void User::setName(std::string _name)
@@ -133,20 +133,20 @@ float User::getAltura()
      return altura;
 }
 
-void User::setEdad(float _edad)
+void User::setEdad(int _edad)
 {
     edad=_edad;
 }
-float User::getEdad()
+int User::getEdad()
 {
     return edad;
 }
 
-void User::setSexo(std::string _sexo)
+void User::setSexo(char _sexo)
 {
     sexo=_sexo;
 }
-std::string User::getSexo()
+char User::getSexo()
 {
      return sexo;
 }
