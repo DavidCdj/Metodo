@@ -8,7 +8,7 @@ class User
 {
     //atributos
     private:
-        std:: string name, lesiones, enfermedades, password;
+        std:: string name, password, lesiones, enfermedades;
         int  id, edad;
         float peso, altura;
         char sexo;
@@ -22,7 +22,7 @@ class User
         void setID( int);
         int getID();
 
-        void setLesiones(std:: string);
+        void setLesiones(std::string);
         std::string getLesiones();
 
         void setEnfermedades(std::string);
@@ -62,7 +62,6 @@ User::User(std::string _name, int _id, std::string _password, float _altura,  st
 }
 User::User()
 {
-
 }
 
 void User::setName(std::string _name)

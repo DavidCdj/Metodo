@@ -35,9 +35,9 @@ void saveUsersToFile(std::vector<User> use, const char* filename)
             outfile.write((char*)&name, sizeof(string));
             outfile.write((char*)&password, sizeof(string));
             outfile.write((char*)&altura, sizeof(float));
-            outfile.write((char*)&lesiones, sizeof(string));
+            outfile.write((char*)&lesiones, sizeof(std::string));
             outfile.write((char*)&peso, sizeof(float));
-            outfile.write((char*)&enfermedades, sizeof(string));
+            outfile.write((char*)&enfermedades, sizeof(std::string));
             outfile.write((char*)&edad, sizeof(int));
             outfile.write((char*)&sexo, sizeof(char));
         }
@@ -152,17 +152,121 @@ void MostrarDatos(User u)
             cout<<"Edad:  "<<u.getEdad() <<endl;
             cout<<"Peso:  "<<u.getPeso()<<endl;
             cout<<"Altura:  "<<u.getAltura()<<endl;
-            cout<<"Sexoxddd:  "<<u.getSexo()<<endl;
-            cout<<"Lesiones:  "<<u.getLesiones()<<endl;
+            cout<<"Sexo:  "<<u.getSexo()<<endl;
             cout<<"Enfermedades:  "<<u.getEnfermedades()<<endl;
+            cout<<"Lesiones:  "<<u.getLesiones()<<endl;
             cout<<"IMC: "<< (u.getPeso()/(u.getAltura()*u.getAltura()) )<<endl;
+}
+
+bool SiNo(string lees)
+{
+    bool flag, tiene;
+    char condiciontype;
+        do{
+            system("cls");
+            cout<<"Usted presenta alguna "<< lees << " ? Y/N"<<endl;
+            //cin.ignore();
+            cin>> condiciontype;
+            cin.ignore();
+            if (tolower(condiciontype)!= 'y' && tolower(condiciontype)!='n')
+                {
+                    cout<<"ingrese una opcion valida:"<<condiciontype<<endl;
+                    system("pause");
+                    flag=true;
+                }
+                else{
+                        if (tolower(condiciontype)== 'y')
+                        tiene=true;
+                        else{tiene=false;}
+                        flag=false;
+                    }
+            }while(flag);
+
+     return tiene;
+}
+
+bool OpcionesValidas(int opc)
+{
+    bool rep;
+    if(opc<49 || opc>52)
+        {
+            cout<<"ingrese una opcion valida"<<endl;
+            system("pause");
+            rep=true;
+        }
+    else
+        rep=false;
+    return rep;
+}
+
+std::string Enfermedad()
+{
+    string enfermedades;
+    int menenfer;
+    char logs;
+    bool flags;
+    flags= SiNo("enfermedad que le impida ejercitarse adecuadamente");
+    if(flags)
+    {
+        do{
+            cout<<"Que tipo de enfermedad presenta?\n"<<"[1] Cardiaca \n[2] Pulmonar \n[3] Artritis \n[4] Cardiovascular "<<endl;
+            cin>>logs;
+            cin.ignore();
+            menenfer=(int)logs;
+            system("cls");
+        }while(OpcionesValidas(menenfer));
+
+        // se podria hacer una funcion para  que mejor le determine la enfermedad
+        switch (logs)
+            {
+                case 49:
+                    enfermedades="Cardiaca";
+                break;
+
+                case 50:
+                    enfermedades="Pulmonar";
+
+                break;
+
+                case 51:
+                    enfermedades="Artritis"
+                    break;
+
+                case 52:
+                    enfermedades="Cardiovascular";
+
+                break;
+            }
+    }
+    else { enfermedades="NP" ;}
+
+    return enfermedades;
+}
+
+
+
+
+std::string Lesion()
+{
+    string lesiones;
+    bool flags;
+    flags= SiNo("lesión que le impida ejercitarse adecuadamente");
+    if(flags)
+    {
+        cout<<"presenta lesión"<<endl;
+        lesiones="Fractura";
+
+    }
+    else {lesiones="NP";}
+
+    return lesiones;
 }
 
 
 
 void Registro_User() //funcion para registrar usuario donde pedira sus datos
 {
-        std:: string name, lesiones, enfermedades, password,  cpassword,sexo;
+        std:: string name,  password,  cpassword,sexo, lesiones, enfermedades;
         char condiciontype, sex;
         int  id,edad;
         float peso, altura;
@@ -186,65 +290,38 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
                 }
                 else flag=false;
         }while(flag);
+        enfermedades= Enfermedad();
+        lesiones= Lesion();
 
-            do{
-                    system("cls");
-                    cout<<"Usted presenta alguna lesion o un enfermedad cardiovascular? Y/N"<<endl;
-                    //cin.ignore();
-                    cin>> condiciontype;
-                    cin.ignore();
-                    if (tolower(condiciontype)!= 'y' && tolower(condiciontype)!='n')
+
+        //cin.ignore();
+        system("cls");
+        cout<<"Contraseña: "<<endl;
+        getline(cin, password);
+        do{
+                cout<<"Confirma tu contraseña: "<<endl;
+                getline(cin, cpassword);
+                if(password!=cpassword)
                     {
-                        cout<<"ingrese una opcion valida:"<<condiciontype<<endl;
+                        cout<<"Las contraseña no coinciden:"<<endl;
+                        cout<<"Vuleve a intentarlo"<<endl;
                         system("pause");
+                        system("cls");
                         flag=true;
                     }
-                    else
-                    {
-                        flag=false;
-                    }
-            }while(flag);
+                else flag=false;
+        }while(flag);
 
-            if(tolower(condiciontype)== 'y')
-                    {
-                        cout<<"Que tipo de enfermedad presenta?"<<endl;
-                        cout<<"Respiratoria [1]: \n"<<"Cardiovscular [2]: \n"<<endl;
-                        //cin.ignore(); falta agregar enfermedades
-                        system("pause");
-                    }
-                else{
-                    lesiones="NP";
-                    enfermedades="NP";
-                }
-                //cin.ignore();
-                system("cls");
-                cout<<"Contraseña: "<<endl;
-                getline(cin, password);
-                do{
-                        cout<<"Confirma tu contraseña: "<<endl;
-                        getline(cin, cpassword);
-                        if(password!=cpassword)
-                        {
-                            cout<<"Las contraseña no coinciden:"<<endl;
-                            cout<<"Vuleve a intentarlo"<<endl;
-                            system("pause");
-                            system("cls");
-                            flag=true;
-                        }
-                        else flag=false;
-                }while(flag);
-            system("cls");
-            id=users.size();
-            User us(name, id,password, altura, lesiones, peso, enfermedades,   edad, sex);
-            users.push_back(us);
-            MostrarDatos(us);
-            system("pause");
-            system("cls");
-            cout<<"Inicie sesion"<<endl;
-            system("pause");
-            saveUsersToFile(users, "usuariosdata.bin");
-
-
+        system("cls");
+        id=users.size();
+        User us(name, id,password, altura, lesiones, peso, enfermedades,   edad, sex);
+        users.push_back(us);
+        MostrarDatos(us);
+        system("pause");
+        system("cls");
+        cout<<"Inicie sesion"<<endl;
+        system("pause");
+        saveUsersToFile(users, "usuariosdata.bin");
 }
 
 void Login_user()
@@ -253,7 +330,6 @@ void Login_user()
     string password;
     bool band=true;
     bool flag=true;
-   // int size = user1.;
 
     nombre=OnlyLetters("Nombre");
 
@@ -289,7 +365,6 @@ void Login_user()
 char Menu_Inicio()
 {
         int lm=0;
-        bool rep= true;
         char logs;
         do
             {
@@ -299,17 +374,8 @@ char Menu_Inicio()
                 cin>>logs;
                 cin.ignore();
                 lm=(int)logs;
-                // se utiliza valores de 49 al 51 porque son valores de 1 al 3 en ascii, para que el usuario no introduzca letras o  simbolos especiales
-                if (lm<49 || lm>52)
-                {
-                    cout<<"ingrese una opcion valida"<<endl;
-                    system("pause");
-                    rep=true;
-                }
-                else
-                    rep=false;
-
-            }while(rep);
+                system("cls");
+            }while(OpcionesValidas(lm));
     return logs;
 }
 
@@ -319,7 +385,7 @@ int main()
     {
         bool reps=true;
 
-            readUsersFromFile("usuariosdata.bin");
+            //readUsersFromFile("usuariosdata.bin");
             //system("pause");
 
 
@@ -350,18 +416,18 @@ int main()
 
                 case 52:
                 {
-                //saveUsersToFile(users, "usuariosdata.bin");
-                /*int n=users.size();
+                /*saveUsersToFile(users, "usuariosdata.bin");
+                int n=users.size();
                  for(int j=0; j<n;j++)
                    {
                        cout<<n;
                       MostrarDatos(users[j]);
 
-                   }*/
+                   }
                    MostrarDatos(users[0]);
 
 
-                    system("pause");
+                    system("pause");*/
                 }
 
                 break;
