@@ -13,7 +13,7 @@ vector <User> users;
 
 void saveUsersToFile(std::vector<User> use, const char* filename)
 {
-    std::ofstream outfile(filename, ios::binary);
+    std::ofstream outfile(filename );
     if (outfile.is_open())
     {
         int n = use.size();
@@ -37,9 +37,10 @@ void saveUsersToFile(std::vector<User> use, const char* filename)
             outfile.write((char*)&altura, sizeof(float));
             outfile.write((char*)&lesiones, sizeof(std::string));
             outfile.write((char*)&peso, sizeof(float));
-            outfile.write((char*)&enfermedades, sizeof(std::string));
-            outfile.write((char*)&edad, sizeof(int));
+            outfile.write((char*)&enfermedades, sizeof(string));
             outfile.write((char*)&sexo, sizeof(char));
+            outfile.write((char*)&edad, sizeof(int));
+           // outfile.write((char*)&sexo, sizeof(char));
         }
         outfile.close();
     }
@@ -50,7 +51,7 @@ void saveUsersToFile(std::vector<User> use, const char* filename)
 void readUsersFromFile(const char* filename)
 {
     vector<User> usuarios;
-    ifstream infile(filename, std::ios::binary);
+    ifstream infile(filename );
 
         int n;
         infile.read((char*)&n, sizeof(int));
@@ -69,11 +70,11 @@ void readUsersFromFile(const char* filename)
             infile.read((char*)&lesiones, sizeof(std::string));
             infile.read((char*)&peso, sizeof(float));
             infile.read((char*)&enfermedades, sizeof(std::string));
-            infile.read((char*)&edad, sizeof(int));
             infile.read((char*)&sexo, sizeof(char));
+            infile.read((char*)&edad, sizeof(int));
             User user(name, id, password,  altura, lesiones,  peso, enfermedades,   edad, sexo);
             users.push_back(user);
-            //system("pause");
+            system("pause");
         }
 
     infile.close();
@@ -86,12 +87,14 @@ string OnlyLetters(string tipovalor) //recorre el string  que busca si introdujo
     int conta;
     int lm=0;
     string name;
-    system("cls");
+
     do{
+            system("cls");
             conta=0;
 
             cout<<tipovalor<<" de usuario: "<<endl;
             getline(cin, name);
+
             for(int i=0; i<name.size();i++)
             {
                 lm=(int)name[i];
@@ -107,8 +110,7 @@ string OnlyLetters(string tipovalor) //recorre el string  que busca si introdujo
             }
             else flagss=false;
 
-    }while(flagss);
-
+    }while(flagss||name.empty());
             return name;
 }
 
@@ -120,15 +122,20 @@ float OnlyNums(string tipodato)//validacion de entrada de solo numeros
     int sd=0;
     float valor;
     string numeros;
-    system("cls");
+
     do{
+        system("cls");
         conta=0;
+
         cout<<tipodato<<" de usuario: "<<endl;
         getline(cin, numeros);
+        /*try{
+            valor= std::stof(numeros);
+        }catch(std::invalid_argument& e){conta=1 ;}*/
         for(int i=0; i<numeros.size();i++)
         {
             sd=(int)numeros[i];
-            //cout<<sd<<endl;
+
             if( (sd<48 || sd>57) && sd!=46 )
                     conta++;
         }
@@ -136,15 +143,54 @@ float OnlyNums(string tipodato)//validacion de entrada de solo numeros
         {
             cout<<"Introduzca solo numeros"<<endl;
             system("pause");
-            system("cls");
+
             flagss=true;
         }
          else flagss=false;
-    }while(flagss);
-    valor= std::stof(numeros);
+    }while(flagss||numeros.empty());
+     valor= std::stof(numeros);
+
 
     return valor;
 }
+
+string TipoDeEnfermedad(string logs)
+{
+    string enfer;
+    int lm;
+    try{
+        lm = std::stoi(logs);
+    }catch(std::exception& e){cout<<"Nose guardo correctamente"<<endl;}
+
+    switch (lm)
+            {
+                case 0:
+                    enfer="NP";
+                break;
+
+                case 1:
+                    enfer="Cardiaca";
+                break;
+
+                case 2:
+                    enfer="Pulmonar";
+
+                break;
+
+                case 3:
+                    enfer="Artritis";
+                    break;
+
+                case 4:
+                    enfer="Cardiovascular";
+
+                break;
+
+            }
+
+    return enfer;
+}
+
 void MostrarDatos(User u)
 {
             std::cout<<"Tu informacion es la siguiente: "<<std::endl;
@@ -153,7 +199,7 @@ void MostrarDatos(User u)
             cout<<"Peso:  "<<u.getPeso()<<endl;
             cout<<"Altura:  "<<u.getAltura()<<endl;
             cout<<"Sexo:  "<<u.getSexo()<<endl;
-            cout<<"Enfermedades:  "<<u.getEnfermedades()<<endl;
+            cout<<"Enfermedades:  "<<TipoDeEnfermedad(u.getEnfermedades())<<endl;
             cout<<"Lesiones:  "<<u.getLesiones()<<endl;
             cout<<"IMC: "<< (u.getPeso()/(u.getAltura()*u.getAltura()) )<<endl;
 }
@@ -188,7 +234,13 @@ bool SiNo(string lees)
 bool OpcionesValidas(string opc)
 {
     bool rep;
-    int sd,conta=0;
+    int sd,conta=0,lm;
+
+
+    try{
+            lm=std::stoi(opc);
+        }catch(std::invalid_argument& e){conta=1;}
+
     for(int i=0; i<opc.size();i++)
     {
         sd=(int)opc[i];
@@ -199,6 +251,7 @@ bool OpcionesValidas(string opc)
     {
         cout<<"ingrese una opcion valida"<<endl;
         system("pause");
+        system("cls");
         rep=true;
     }
     else  rep=false;
@@ -207,7 +260,7 @@ bool OpcionesValidas(string opc)
     return rep;
 }
 
-std::string Enfermedad()
+string Enfermedad()
 {
     string enfermedades;
     int menenfer;
@@ -219,42 +272,14 @@ std::string Enfermedad()
         do{
             cout<<"Que tipo de enfermedad presenta?\n"<<"[1] Cardiaca \n[2] Pulmonar \n[3] Artritis \n[4] Cardiovascular "<<endl;
             getline(cin, logs);
-            //cin>>logs;
-            //cin.ignore();
-            //menenfer=(int)logs;
             system("cls");
         }while(OpcionesValidas(logs));
 
-
-        // se podria hacer una funcion para  que mejor le determine la enfermedad
-        switch (stoi(logs))
-            {
-                case 1:
-                    enfermedades="Cardiaca";
-                break;
-
-                case 2:
-                    enfermedades="Pulmonar";
-
-                break;
-
-                case 3:
-                    enfermedades="Artritis";
-                    break;
-
-                case 4:
-                    enfermedades="Cardiovascular";
-
-                break;
-            }
     }
-    else { enfermedades="NP" ;}
+    else { logs="0" ;}
 
-    return enfermedades;
+    return logs;
 }
-
-
-
 
 std::string Lesion()
 {
@@ -271,7 +296,6 @@ std::string Lesion()
 
     return lesiones;
 }
-
 
 
 void Registro_User() //funcion para registrar usuario donde pedira sus datos
@@ -324,14 +348,14 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
 
         system("cls");
         id=users.size();
-        User us(name, id,password, altura, lesiones, peso, enfermedades,   edad, sex);
+        User us(name, id,password, altura, lesiones, peso, enfermedades, edad, sex);
         users.push_back(us);
         MostrarDatos(us);
         system("pause");
         system("cls");
         cout<<"Inicie sesion"<<endl;
         system("pause");
-        saveUsersToFile(users, "usuariosdata.bin");
+        saveUsersToFile(users, "usuariosdata.txt");
 }
 
 void Login_user()
@@ -378,12 +402,12 @@ char Menu_Inicio()
         string lmf;
         char logs;
         do
-            {
-                system("cls");
-                cout<<"--------Rutina de Gym--------\n\n\r"<<endl;
-                cout<<"1.- Usuario existente\n"<< "2.- nuevo usuario\n"<<"3.-salir\n"<<endl;
-                getline(cin, lmf);
-            }while(OpcionesValidas(lmf));
+        {
+            system("cls");
+            cout<<"--------Rutina de Gym--------\n\n\r"<<endl;
+            cout<<"1.- Usuario existente\n"<< "2.- nuevo usuario\n"<<"3.-salir\n"<<endl;
+            getline(cin, lmf);
+        }while(OpcionesValidas(lmf));
             lm=std::stoi(lmf);
     return lm;
 }
@@ -393,7 +417,7 @@ char Menu_Inicio()
 int main()
     {
         bool reps=true;
-            //readUsersFromFile("usuariosdata.bin");
+            readUsersFromFile("usuariosdata.txt");
             //system("pause");
 
 
@@ -424,18 +448,9 @@ int main()
 
                 case 4:
                 {
-                /*saveUsersToFile(users, "usuariosdata.bin");
-                int n=users.size();
-                 for(int j=0; j<n;j++)
-                   {
-                       cout<<n;
-                      MostrarDatos(users[j]);
 
-                   }
                    MostrarDatos(users[0]);
-
-
-                    system("pause");*/
+                    system("pause");
                 }
 
                 break;

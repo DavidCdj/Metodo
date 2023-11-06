@@ -8,13 +8,13 @@ class User
 {
     //atributos
     private:
-        std:: string name, password, lesiones, enfermedades;
-        int  id, edad;
+        std:: string name, password, lesiones,enfermedades;
+        int  id, edad ;
         float peso, altura;
         char sexo;
     //metodos
     public:
-        User(std::string, int, std::string, float, std::string, float, std::string, float, char); //constructor
+        User(std::string, int, std::string, float, std::string, float, std::string, int, char); //constructor
         User();
         void setName(std::string);
         std::string getName();
@@ -37,8 +37,8 @@ class User
         void setAltura(float);
         float getAltura();
 
-        void setEdad(float);
-        float getEdad();
+        void setEdad(int);
+        int getEdad();
 
         void setSexo(char);
         char getSexo();
@@ -48,7 +48,7 @@ class User
 };
 //constructor
 User::User(std::string _name, int _id, std::string _password, float _altura,  std::string _lessiones,
-           float _peso, std::string _enfermedades,   float _edad,  char _sexo)
+           float _peso, std::string _enfermedades,   int _edad,  char _sexo)
 {
     name=_name;
     id=_id;
@@ -133,11 +133,11 @@ float User::getAltura()
      return altura;
 }
 
-void User::setEdad(float _edad)
+void User::setEdad(int _edad)
 {
     edad=_edad;
 }
-float User::getEdad()
+int User::getEdad()
 {
     return edad;
 }
