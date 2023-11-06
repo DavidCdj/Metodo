@@ -121,15 +121,14 @@ float OnlyNums(string tipodato)//validacion de entrada de solo numeros
     float valor;
     string numeros;
     system("cls");
-   // float valor
     do{
-            conta=0;
+        conta=0;
         cout<<tipodato<<" de usuario: "<<endl;
-        cin>> valor;
-        numeros=to_string(valor);
+        getline(cin, numeros);
         for(int i=0; i<numeros.size();i++)
         {
             sd=(int)numeros[i];
+            cout<<sd<<endl;
             if( (sd<48 || sd>57) && sd!=46 )
                     conta++;
         }
@@ -142,7 +141,8 @@ float OnlyNums(string tipodato)//validacion de entrada de solo numeros
         }
          else flagss=false;
     }while(flagss);
-    cin.clear();
+    valor= std::stof(numeros);
+
     return valor;
 }
 void MostrarDatos(User u)
@@ -229,7 +229,7 @@ std::string Enfermedad()
                 break;
 
                 case 51:
-                    enfermedades="Artritis"
+                    enfermedades="Artritis";
                     break;
 
                 case 52:
