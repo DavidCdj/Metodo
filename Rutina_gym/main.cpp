@@ -1,11 +1,11 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <cctype>
+#include <cctype> //libreria que ocupe para pasar de mayuculas a minusculas se puede usar de ambas formas
 #include <cstdlib>
-#include <fstream>
-#include <vector>
-#include <string.h>
+#include <fstream> //para los archivos
+#include <vector> //utilice para crear y usar vectores
+#include <string.h> //para utlizar strings.
 #include "User.h"
 
 using namespace std;
@@ -128,7 +128,7 @@ float OnlyNums(string tipodato)//validacion de entrada de solo numeros
         for(int i=0; i<numeros.size();i++)
         {
             sd=(int)numeros[i];
-            cout<<sd<<endl;
+            //cout<<sd<<endl;
             if( (sd<48 || sd>57) && sd!=46 )
                     conta++;
         }
@@ -185,17 +185,25 @@ bool SiNo(string lees)
      return tiene;
 }
 
-bool OpcionesValidas(int opc)
+bool OpcionesValidas(string opc)
 {
     bool rep;
-    if(opc<49 || opc>52)
-        {
-            cout<<"ingrese una opcion valida"<<endl;
-            system("pause");
-            rep=true;
-        }
-    else
-        rep=false;
+    int sd,conta=0;
+    for(int i=0; i<opc.size();i++)
+    {
+        sd=(int)opc[i];
+        if(sd<49 || sd>53)
+        conta++;
+    }
+    if (conta>0)
+    {
+        cout<<"ingrese una opcion valida"<<endl;
+        system("pause");
+        rep=true;
+    }
+    else  rep=false;
+
+
     return rep;
 }
 
@@ -203,36 +211,38 @@ std::string Enfermedad()
 {
     string enfermedades;
     int menenfer;
-    char logs;
+    string logs;
     bool flags;
     flags= SiNo("enfermedad que le impida ejercitarse adecuadamente");
     if(flags)
     {
         do{
             cout<<"Que tipo de enfermedad presenta?\n"<<"[1] Cardiaca \n[2] Pulmonar \n[3] Artritis \n[4] Cardiovascular "<<endl;
-            cin>>logs;
-            cin.ignore();
-            menenfer=(int)logs;
+            getline(cin, logs);
+            //cin>>logs;
+            //cin.ignore();
+            //menenfer=(int)logs;
             system("cls");
-        }while(OpcionesValidas(menenfer));
+        }while(OpcionesValidas(logs));
+
 
         // se podria hacer una funcion para  que mejor le determine la enfermedad
-        switch (logs)
+        switch (stoi(logs))
             {
-                case 49:
+                case 1:
                     enfermedades="Cardiaca";
                 break;
 
-                case 50:
+                case 2:
                     enfermedades="Pulmonar";
 
                 break;
 
-                case 51:
+                case 3:
                     enfermedades="Artritis";
                     break;
 
-                case 52:
+                case 4:
                     enfermedades="Cardiovascular";
 
                 break;
@@ -365,18 +375,17 @@ void Login_user()
 char Menu_Inicio()
 {
         int lm=0;
+        string lmf;
         char logs;
         do
             {
                 system("cls");
                 cout<<"--------Rutina de Gym--------\n\n\r"<<endl;
                 cout<<"1.- Usuario existente\n"<< "2.- nuevo usuario\n"<<"3.-salir\n"<<endl;
-                cin>>logs;
-                cin.ignore();
-                lm=(int)logs;
-                system("cls");
-            }while(OpcionesValidas(lm));
-    return logs;
+                getline(cin, lmf);
+            }while(OpcionesValidas(lmf));
+            lm=std::stoi(lmf);
+    return lm;
 }
 
 
@@ -384,7 +393,6 @@ char Menu_Inicio()
 int main()
     {
         bool reps=true;
-
             //readUsersFromFile("usuariosdata.bin");
             //system("pause");
 
@@ -392,14 +400,14 @@ int main()
     do{
          switch (Menu_Inicio())
             {
-                case 49:
+                case 1:
                     {
                         system("cls");
                         Login_user();
                     }
                 break;
 
-                case 50:
+                case 2:
                     {
                         system("cls");
                         Registro_User();
@@ -407,14 +415,14 @@ int main()
 
                 break;
 
-                case 51:
+                case 3:
                     {
                         reps=false;
 
                     }
                     break;
 
-                case 52:
+                case 4:
                 {
                 /*saveUsersToFile(users, "usuariosdata.bin");
                 int n=users.size();
