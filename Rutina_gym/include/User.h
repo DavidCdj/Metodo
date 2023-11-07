@@ -8,13 +8,13 @@ class User
 {
     //atributos
     private:
-        std:: string name, password, lesiones,enfermedades;
+        std:: string name, password;
         int  id, edad ;
         float peso, altura;
-        char sexo;
+        char sexo,enfermedades, lesiones;
     //metodos
     public:
-        User(std::string, int, std::string, float, std::string, float, std::string, int, char); //constructor
+        User(std::string, int, std::string, float, char, float, char, int, char); //constructor
         User();
         void setName(std::string);
         std::string getName();
@@ -22,11 +22,11 @@ class User
         void setID( int);
         int getID();
 
-        void setLesiones(std::string);
-        std::string getLesiones();
+        void setLesiones(char);
+        char getLesiones();
 
-        void setEnfermedades(std::string);
-        std::string getEnfermedades();
+        void setEnfermedades(char);
+        char getEnfermedades();
 
         void setPassword(std::string);
         std::string getPassword();
@@ -47,8 +47,8 @@ class User
 
 };
 //constructor
-User::User(std::string _name, int _id, std::string _password, float _altura,  std::string _lessiones,
-           float _peso, std::string _enfermedades,   int _edad,  char _sexo)
+User::User(std::string _name, int _id, std::string _password, float _altura,  char _lessiones,
+           float _peso, char _enfermedades,   int _edad,  char _sexo)
 {
     name=_name;
     id=_id;
@@ -84,22 +84,22 @@ int User::getID()
     return id;
 }
 
-void User::setLesiones(std::string _lesiones)
+void User::setLesiones(char _lesiones)
 {
     lesiones=_lesiones;
 }
 
-std::string User::getLesiones()
+char User::getLesiones()
 {
     return lesiones;
 }
 
-void User::setEnfermedades(std::string _enfermedades)
+void User::setEnfermedades(char _enfermedades)
 {
     enfermedades= _enfermedades;
 }
 
-std::string User::getEnfermedades()
+char User::getEnfermedades()
 {
     return enfermedades;
 }
