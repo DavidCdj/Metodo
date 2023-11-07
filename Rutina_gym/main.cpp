@@ -309,6 +309,36 @@ char Lesion()
     return logs;
 }
 
+string Pass()
+{
+    string password,cpassword;
+    bool flag;
+
+        do{
+                system("cls");
+                cout<<"Introduce tu contraseña: "<<endl;
+                getline(cin, password);
+                if(!password.empty())
+                {
+                    cout<<"Confirma tu contraseña: "<<endl;
+                    getline(cin, cpassword);
+                    if(password!=cpassword)
+                    {
+                        cout<<"Las contraseña no coinciden:"<<endl;
+                        cout<<"Vuleve a intentarlo"<<endl;
+                        system("pause");
+                        system("cls");
+                        flag=true;
+                    }
+                    else flag=false;
+                }
+                else flag=true;
+
+        }while(flag);
+
+    return password;
+}
+
 void Cambios(int id)
 {
     bool flag,validar;
@@ -320,40 +350,54 @@ void Cambios(int id)
 
         if(flag)
         {
-            cambiar=MenusDeOpciones("Que paranetro quieres cambar?\n[1] Nombre \n[2] Peso \n[3] Edad \n[4] Enfermedad \n[5] Lesione \n[6] Altura \n[7] Password ", 55 );
+            cambiar=MenusDeOpciones("Que paranetro quieres cambar?\n[1] Nombre \n[2] Peso \n[3] Edad \n[4] Enfermedad \n[5] Lesion \n[6] Altura \n[7] Password ", 55 );
             cout<<"wntramosa cambios"<<cambiar <<endl;
             switch(cambiar)
             {
                 case 49:
                     name=OnlyLetters("Nombre");
                     users[id].setName(name);
-
                     break;
 
                 case 50:
+                    peso=OnlyNums("Peso");
+                    users[id].setPeso(peso);
                     break;
 
                 case 51:
+                    edad=OnlyNums("Edad");
+                    users[id].setEdad(edad);
                 break;
 
                 case 52:
+                    enfermedad=Enfermedad();
+                    users[id].setEnfermedades(enfermedad);
                     break;
 
                 case 53:
+                    lesion=Lesion();
+                    users[id].setLesiones(lesion);
                     break;
 
                 case 54:
+                    altura=OnlyNums("Altura");
+                    users[id].setAltura(altura);
                     break;
 
                 case 55:
+                    cpassword=Pass();
+                    users[id].setPassword(cpassword);
                     break;
-
             }
-
         }
         MostrarDatos(users[id]);
         saveUsersToFile(users, "usuariosdata.txt");
         system("pause");
+}
+
+void Rutina(char lesioon, char enfermedd)
+{
+
 
 }
 
@@ -387,21 +431,9 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
         enfermedades= Enfermedad();
         lesiones= Lesion();
         system("cls");
-        cout<<"Contraseña: "<<endl;
-        getline(cin, password);
-        do{
-                cout<<"Confirma tu contraseña: "<<endl;
-                getline(cin, cpassword);
-                if(password!=cpassword)
-                    {
-                        cout<<"Las contraseña no coinciden:"<<endl;
-                        cout<<"Vuleve a intentarlo"<<endl;
-                        system("pause");
-                        system("cls");
-                        flag=true;
-                    }
-                else flag=false;
-        }while(flag);
+
+        cpassword=Pass();
+
 
         system("cls");
         id=users.size();
@@ -470,7 +502,7 @@ char Menu_Inicio()
 int main()
     {
         bool reps=true;
-            //readUsersFromFile("usuariosdata.txt");
+            readUsersFromFile("usuariosdata.txt");
     do{
          switch (Menu_Inicio())
             {
@@ -501,6 +533,7 @@ int main()
                     for(int i=0;i<users.size();i++)
                     {
                         MostrarDatos(users[i]);
+                        Cambios(i);
                         system("pause");
                     }
                 }
