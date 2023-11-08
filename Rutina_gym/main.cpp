@@ -16,12 +16,14 @@ void saveUsersToFile(std::vector<User> use, const char* filename)
     std::ofstream outfile(filename );
     if (outfile.is_open())
     {
+
         int n = use.size();
         outfile.write((char*)&n, sizeof(int));
         for (int i=0; i<n;i++)
         {
             int id= users[i].getID();
             std::string name=users[i].getName();
+            std::vector<char> bytes(name.begin(), name.end());
             std::string password=users[i].getPassword();
             char lesiones=users[i].getLesiones();
             char enfermedades=users[i].getEnfermedades();
@@ -29,8 +31,11 @@ void saveUsersToFile(std::vector<User> use, const char* filename)
             float peso=users[i].getPeso();
             int edad=users[i].getEdad();
             char sexo=users[i].getSexo();
+            int tamaniovector=bytes.size();
             outfile.write((char*)&id, sizeof(int));
-            outfile.write((char*)&name, sizeof(string));
+            outfile.write((char*)&tamaniovector, sizeof(int));
+            //outfile.write((char*)&name, sizeof(string));
+            outfile.write(bytes.data(), bytes.size());
             outfile.write((char*)&password, sizeof(string));
             outfile.write((char*)&altura, sizeof(float));
             outfile.write((char*)&lesiones, sizeof(char));
@@ -53,12 +58,15 @@ void readUsersFromFile(const char* filename)
         infile.read((char*)&n, sizeof(int));
         for (int i = 0; i <n; i++)
         {
-            int edad,id;
+            int edad,id, vectortam;
             float altura, peso, imc;
             char sexo, enfermedades, lesiones;
-            std::string name, password;
+            std::string  password;
             infile.read((char*)&id, sizeof(int));
-            infile.read((char*)&name, sizeof(string));
+            infile.read((char*)&vectortam, sizeof(int));
+            std::vector<char> bytes(vectortam);
+            //infile.read((char*)&name, sizeof(string));
+            infile.read(bytes.data(), bytes.size());
             infile.read((char*)&password, sizeof(std::string));
             infile.read((char*)&altura, sizeof(float));
             infile.read((char*)&lesiones, sizeof(char));
@@ -66,8 +74,10 @@ void readUsersFromFile(const char* filename)
             infile.read((char*)&enfermedades, sizeof(char));
             infile.read((char*)&sexo, sizeof(char));
             infile.read((char*)&edad, sizeof(int));
+            std::string name(bytes.begin(), bytes.end());
             User user(name, id, password,  altura, lesiones,  peso, enfermedades,   edad, sexo);
             users.push_back(user);
+
             system("pause");
         }
     infile.close();
@@ -389,10 +399,12 @@ void Cambios(int id)
                     users[id].setPassword(cpassword);
                     break;
             }
+
+            saveUsersToFile(users, "usuariosdata.txt");
+            system("pause");
         }
         MostrarDatos(users[id]);
-        saveUsersToFile(users, "usuariosdata.txt");
-        system("pause");
+
 }
 
 void RutinaGuardar(char lesioon, char enfermedd)
