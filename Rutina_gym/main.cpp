@@ -395,9 +395,14 @@ void Cambios(int id)
         system("pause");
 }
 
-void Rutina(char lesioon, char enfermedd)
+void RutinaGuardar(char lesioon, char enfermedd)
 {
 
+
+}
+
+void RutinaMostrar()
+{
 
 }
 
@@ -431,10 +436,7 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
         enfermedades= Enfermedad();
         lesiones= Lesion();
         system("cls");
-
         cpassword=Pass();
-
-
         system("cls");
         id=users.size();
         User us(name, id,password, altura, lesiones, peso, enfermedades, edad, sex);
