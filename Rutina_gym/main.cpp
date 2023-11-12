@@ -25,6 +25,7 @@ void saveUsersToFile(std::vector<User> use, const char* filename)
             std::string name=users[i].getName();
             std::vector<char> bytes(name.begin(), name.end());
             std::string password=users[i].getPassword();
+            std::vector<char> byt(password.begin(), password.end());
             char lesiones=users[i].getLesiones();
             char enfermedades=users[i].getEnfermedades();
             float altura=users[i].getAltura();
@@ -32,11 +33,14 @@ void saveUsersToFile(std::vector<User> use, const char* filename)
             int edad=users[i].getEdad();
             char sexo=users[i].getSexo();
             int tamaniovector=bytes.size();
+            int tamaniopass=byt.size();
             outfile.write((char*)&id, sizeof(int));
             outfile.write((char*)&tamaniovector, sizeof(int));
             //outfile.write((char*)&name, sizeof(string));
             outfile.write(bytes.data(), bytes.size());
-            outfile.write((char*)&password, sizeof(string));
+            //outfile.write((char*)&password, sizeof(string));
+            outfile.write((char*)&tamaniopass, sizeof(int));
+            outfile.write(byt.data(), byt.size());
             outfile.write((char*)&altura, sizeof(float));
             outfile.write((char*)&lesiones, sizeof(char));
             outfile.write((char*)&peso, sizeof(float));
@@ -58,7 +62,7 @@ void readUsersFromFile(const char* filename)
         infile.read((char*)&n, sizeof(int));
         for (int i = 0; i <n; i++)
         {
-            int edad,id, vectortam;
+            int edad,id, vectortam, tamaniopass;
             float altura, peso, imc;
             char sexo, enfermedades, lesiones;
             std::string  password;
@@ -67,7 +71,10 @@ void readUsersFromFile(const char* filename)
             std::vector<char> bytes(vectortam);
             //infile.read((char*)&name, sizeof(string));
             infile.read(bytes.data(), bytes.size());
-            infile.read((char*)&password, sizeof(std::string));
+            infile.read((char*)&tamaniopass, sizeof(int));
+            //infile.read((char*)&password, sizeof(std::string));
+            std::vector<char> bytpass(tamaniopass);
+            infile.read(bytpass.data(), bytpass.size());
             infile.read((char*)&altura, sizeof(float));
             infile.read((char*)&lesiones, sizeof(char));
             infile.read((char*)&peso, sizeof(float));
@@ -516,7 +523,7 @@ char Menu_Inicio()
 int main()
     {
         bool reps=true;
-            readUsersFromFile("usuariosdata.txt");
+            //readUsersFromFile("usuariosdata.txt");
     do{
          switch (Menu_Inicio())
             {
