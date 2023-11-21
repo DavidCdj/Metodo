@@ -85,18 +85,16 @@ void readUsersFromFile(const char* filename)
             std::string password(bytpass.begin(), bytpass.end());
             User user(name, id, password,  altura, lesiones,  peso, enfermedades,   edad, sexo);
             users.push_back(user);
-            system("pause");
         }
     infile.close();
 }
 
-string OnlyLetters(string tipovalor) //recorre el string  que busca si introdujo solo letras, en casi de que si devuelve false.
+string OnlyLetters(string tipovalor) //Validacion de entrada de solo letras.
 {
     bool flagss;
-    int conta;
-    int lm=0;
+    int conta, lm=0;
     string name;
-    do{
+    do{     //recorre todo el string, analizando si solo introdujo letras, en caso de que no el ciclo se repetira hasta que lo realice correctamente
             system("cls");
             conta=0;
             cout<<tipovalor<<" de usuario: "<<endl;
@@ -115,7 +113,7 @@ string OnlyLetters(string tipovalor) //recorre el string  que busca si introdujo
                 flagss=true;
             }
             else flagss=false;
-    }while(flagss||name.empty());
+    }while(flagss||name.empty());//el ciclo se repetira hasta que  el usuario solo introduja letras, name.empty  se expresa en caso de que no  halla leido nada el string,
     return name;
 }
 
@@ -123,11 +121,9 @@ string OnlyLetters(string tipovalor) //recorre el string  que busca si introdujo
 float OnlyNums(string tipodato)//validacion de entrada de solo numeros
 {
     bool flagss=true;
-    int conta=0;
-    int sd=0;
+    int conta, sd=0;
     float valor;
     string numeros;
-
     do{
         system("cls");
         conta=0;
@@ -152,7 +148,7 @@ float OnlyNums(string tipodato)//validacion de entrada de solo numeros
     return valor;
 }
 
-string TipoDeEnfermedad(char logs)
+string TipoDeEnfermedad(char logs)//funcion  para mandar que tipo de enfermedad presenta el usuario cuando se imprimen los datos, o se quiere saber por separado
 {
     string enfer;
     int lm;
@@ -223,7 +219,7 @@ string TipoDeFractura(char logs)
     return frac;
 }
 
-void MostrarDatos(User u)
+void MostrarDatos(User u) //cada que se  llama, solo mostrara los datos del usuario
 {
             std::cout<<"Tu informacion es la siguiente: "<<std::endl;
             cout<<"Nombre: "<< u.getName() <<endl;
@@ -237,7 +233,7 @@ void MostrarDatos(User u)
             cout<<"IMC: "<< (u.getPassword() )<<endl;
 }
 
-bool SiNo(string lees)
+bool SiNo(string lees) //funcion para la eleccion  de si o no, ejemplo si desea realizar algun cambio
 {
     bool flag, tiene;
     char condiciontype;
@@ -269,20 +265,32 @@ bool OpcionesValidas(string opc, int ascci)
     try{
             lm=std::stoi(opc);
     }catch(std::invalid_argument& e){conta=1;}
-    for(int i=0; i<opc.size();i++)
+    if(opc.size()==1)
     {
-        sd=(int)opc[i];
-        if(sd<49 || sd>ascci)
-        conta++;
+         for(int i=0; i<opc.size();i++)
+        {
+            sd=(int)opc[i];
+            if(sd<49 || sd>ascci)
+            conta++;
+        }
+        if (conta>0)
+        {
+            cout<<"ingrese una opcion valida"<<endl;
+            system("pause");
+            system("cls");
+            rep=true;
+        }
+        else  rep=false;
+
     }
-    if (conta>0)
-    {
-        cout<<"ingrese una opcion valida"<<endl;
-        system("pause");
-        system("cls");
-        rep=true;
-    }
-    else  rep=false;
+    else
+        {
+            cout<<"ingrese una opcion valida"<<endl;
+            system("pause");
+            system("cls");
+            rep=true;
+        }
+
     return rep;
 }
 
@@ -368,7 +376,6 @@ void Cambios(int id)
         if(flag)
         {
             cambiar=MenusDeOpciones("Que paranetro quieres cambar?\n[1] Nombre \n[2] Peso \n[3] Edad \n[4] Enfermedad \n[5] Lesion \n[6] Altura \n[7] Password ", 55 );
-            cout<<"wntramosa cambios"<<cambiar <<endl;
             switch(cambiar)
             {
                 case 49:
