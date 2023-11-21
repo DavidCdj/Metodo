@@ -65,7 +65,7 @@ void readUsersFromFile(const char* filename)
             int edad,id, vectortam, tamaniopass;
             float altura, peso, imc;
             char sexo, enfermedades, lesiones;
-            std::string  password;
+
             infile.read((char*)&id, sizeof(int));
             infile.read((char*)&vectortam, sizeof(int));
             std::vector<char> bytes(vectortam);
@@ -82,9 +82,9 @@ void readUsersFromFile(const char* filename)
             infile.read((char*)&sexo, sizeof(char));
             infile.read((char*)&edad, sizeof(int));
             std::string name(bytes.begin(), bytes.end());
+            std::string password(bytpass.begin(), bytpass.end());
             User user(name, id, password,  altura, lesiones,  peso, enfermedades,   edad, sexo);
             users.push_back(user);
-
             system("pause");
         }
     infile.close();
@@ -234,6 +234,7 @@ void MostrarDatos(User u)
             cout<<"Enfermedades:  "<<TipoDeEnfermedad(u.getEnfermedades())<<endl;
             cout<<"Lesiones:  "<<TipoDeFractura(u.getLesiones())<<endl;
             cout<<"IMC: "<< (u.getPeso()/(u.getAltura()*u.getAltura()) )<<endl;
+            cout<<"IMC: "<< (u.getPassword() )<<endl;
 }
 
 bool SiNo(string lees)
@@ -268,7 +269,6 @@ bool OpcionesValidas(string opc, int ascci)
     try{
             lm=std::stoi(opc);
     }catch(std::invalid_argument& e){conta=1;}
-
     for(int i=0; i<opc.size();i++)
     {
         sd=(int)opc[i];
@@ -458,7 +458,7 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
         cpassword=Pass();
         system("cls");
         id=users.size();
-        User us(name, id,password, altura, lesiones, peso, enfermedades, edad, sex);
+        User us(name, id,cpassword, altura, lesiones, peso, enfermedades, edad, sex);
         users.push_back(us);
         MostrarDatos(us);
         system("pause");
@@ -523,7 +523,7 @@ char Menu_Inicio()
 int main()
     {
         bool reps=true;
-            //readUsersFromFile("usuariosdata.txt");
+            readUsersFromFile("usuariosdata.txt");
     do{
          switch (Menu_Inicio())
             {
