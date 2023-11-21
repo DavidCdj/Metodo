@@ -16,22 +16,31 @@ void saveUsersToFile(std::vector<User> use, const char* filename)
     std::ofstream outfile(filename );
     if (outfile.is_open())
     {
+
         int n = use.size();
         outfile.write((char*)&n, sizeof(int));
         for (int i=0; i<n;i++)
         {
             int id= users[i].getID();
             std::string name=users[i].getName();
+            std::vector<char> bytes(name.begin(), name.end());
             std::string password=users[i].getPassword();
+            std::vector<char> byt(password.begin(), password.end());
             char lesiones=users[i].getLesiones();
             char enfermedades=users[i].getEnfermedades();
             float altura=users[i].getAltura();
             float peso=users[i].getPeso();
             int edad=users[i].getEdad();
             char sexo=users[i].getSexo();
+            int tamaniovector=bytes.size();
+            int tamaniopass=byt.size();
             outfile.write((char*)&id, sizeof(int));
-            outfile.write((char*)&name, sizeof(string));
-            outfile.write((char*)&password, sizeof(string));
+            outfile.write((char*)&tamaniovector, sizeof(int));
+            //outfile.write((char*)&name, sizeof(string));
+            outfile.write(bytes.data(), bytes.size());
+            //outfile.write((char*)&password, sizeof(string));
+            outfile.write((char*)&tamaniopass, sizeof(int));
+            outfile.write(byt.data(), byt.size());
             outfile.write((char*)&altura, sizeof(float));
             outfile.write((char*)&lesiones, sizeof(char));
             outfile.write((char*)&peso, sizeof(float));
@@ -53,19 +62,27 @@ void readUsersFromFile(const char* filename)
         infile.read((char*)&n, sizeof(int));
         for (int i = 0; i <n; i++)
         {
-            int edad,id;
+            int edad,id, vectortam, tamaniopass;
             float altura, peso, imc;
             char sexo, enfermedades, lesiones;
-            std::string name, password;
+
             infile.read((char*)&id, sizeof(int));
-            infile.read((char*)&name, sizeof(string));
-            infile.read((char*)&password, sizeof(std::string));
+            infile.read((char*)&vectortam, sizeof(int));
+            std::vector<char> bytes(vectortam);
+            //infile.read((char*)&name, sizeof(string));
+            infile.read(bytes.data(), bytes.size());
+            infile.read((char*)&tamaniopass, sizeof(int));
+            //infile.read((char*)&password, sizeof(std::string));
+            std::vector<char> bytpass(tamaniopass);
+            infile.read(bytpass.data(), bytpass.size());
             infile.read((char*)&altura, sizeof(float));
             infile.read((char*)&lesiones, sizeof(char));
             infile.read((char*)&peso, sizeof(float));
             infile.read((char*)&enfermedades, sizeof(char));
             infile.read((char*)&sexo, sizeof(char));
             infile.read((char*)&edad, sizeof(int));
+            std::string name(bytes.begin(), bytes.end());
+            std::string password(bytpass.begin(), bytpass.end());
             User user(name, id, password,  altura, lesiones,  peso, enfermedades,   edad, sexo);
             users.push_back(user);
             system("pause");
@@ -217,6 +234,7 @@ void MostrarDatos(User u)
             cout<<"Enfermedades:  "<<TipoDeEnfermedad(u.getEnfermedades())<<endl;
             cout<<"Lesiones:  "<<TipoDeFractura(u.getLesiones())<<endl;
             cout<<"IMC: "<< (u.getPeso()/(u.getAltura()*u.getAltura()) )<<endl;
+            cout<<"IMC: "<< (u.getPassword() )<<endl;
 }
 
 bool SiNo(string lees)
@@ -251,7 +269,6 @@ bool OpcionesValidas(string opc, int ascci)
     try{
             lm=std::stoi(opc);
     }catch(std::invalid_argument& e){conta=1;}
-
     for(int i=0; i<opc.size();i++)
     {
         sd=(int)opc[i];
@@ -389,15 +406,22 @@ void Cambios(int id)
                     users[id].setPassword(cpassword);
                     break;
             }
+
+            saveUsersToFile(users, "usuariosdata.txt");
+            system("pause");
         }
         MostrarDatos(users[id]);
-        saveUsersToFile(users, "usuariosdata.txt");
-        system("pause");
+
 }
 
-void Rutina(char lesioon, char enfermedd)
+void RutinaGuardar(char lesioon, char enfermedd)
 {
 
+
+}
+
+void RutinaMostrar()
+{
 
 }
 
@@ -431,13 +455,10 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
         enfermedades= Enfermedad();
         lesiones= Lesion();
         system("cls");
-
         cpassword=Pass();
-
-
         system("cls");
         id=users.size();
-        User us(name, id,password, altura, lesiones, peso, enfermedades, edad, sex);
+        User us(name, id,cpassword, altura, lesiones, peso, enfermedades, edad, sex);
         users.push_back(us);
         MostrarDatos(us);
         system("pause");
