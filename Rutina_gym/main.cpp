@@ -1,22 +1,23 @@
 #include <iostream>
 #include <stdio.h>
-#include <stdlib.h>
-#include <cctype> //libreria que ocupe para pasar de mayuculas a minusculas se puede usar de ambas formas
-#include <cstdlib>
+#include <stdlib.h> //Sirve para convertir un entero a cadena de caracteres.
+#include <cctype> //Convierte a mayúsculas  un carácter o un intervalo de caracteres
+#include <cstdlib>// Sirve para ejecutar subprocesos o comandos del sistema operativo
 #include <fstream> //para los archivos
-#include <vector> //utilice para crear y usar vectores
+#include <vector> //sirve  para crear y usar vectores
 #include <string.h> //para utlizar strings.
 #include "User.h"
 
 using namespace std;
 vector <User> users;
 
+//Funcion para guardar los usuarios resgistrados en un archivo. tiene 36 lienas de codigo,
+
 void saveUsersToFile(std::vector<User> use, const char* filename)
 {
     std::ofstream outfile(filename );
     if (outfile.is_open())
     {
-
         int n = use.size();
         outfile.write((char*)&n, sizeof(int));
         for (int i=0; i<n;i++)
@@ -36,9 +37,7 @@ void saveUsersToFile(std::vector<User> use, const char* filename)
             int tamaniopass=byt.size();
             outfile.write((char*)&id, sizeof(int));
             outfile.write((char*)&tamaniovector, sizeof(int));
-            //outfile.write((char*)&name, sizeof(string));
             outfile.write(bytes.data(), bytes.size());
-            //outfile.write((char*)&password, sizeof(string));
             outfile.write((char*)&tamaniopass, sizeof(int));
             outfile.write(byt.data(), byt.size());
             outfile.write((char*)&altura, sizeof(float));
@@ -52,8 +51,8 @@ void saveUsersToFile(std::vector<User> use, const char* filename)
     }
 }
 
-// Lee un vector de objetos User de un archivo binario
-
+// Funcion que lee un archivo que contiene los usuarios, y los almacena en un vector, ese vector almacena objetos de tipo User, con sus respectivos parametros.
+//contiene  30 lineas de codigo
 void readUsersFromFile(const char* filename)
 {
     vector<User> usuarios;
@@ -65,14 +64,11 @@ void readUsersFromFile(const char* filename)
             int edad,id, vectortam, tamaniopass;
             float altura, peso, imc;
             char sexo, enfermedades, lesiones;
-
             infile.read((char*)&id, sizeof(int));
             infile.read((char*)&vectortam, sizeof(int));
             std::vector<char> bytes(vectortam);
-            //infile.read((char*)&name, sizeof(string));
             infile.read(bytes.data(), bytes.size());
             infile.read((char*)&tamaniopass, sizeof(int));
-            //infile.read((char*)&password, sizeof(std::string));
             std::vector<char> bytpass(tamaniopass);
             infile.read(bytpass.data(), bytpass.size());
             infile.read((char*)&altura, sizeof(float));
@@ -89,6 +85,10 @@ void readUsersFromFile(const char* filename)
     infile.close();
 }
 
+
+//Funcion que recibe como parametros un string, que fue ingresado previamente por el usuario, el cual va a validar  como entrada unicamente letras
+// en caso de que no sean letras le indicara al usuario que introduzca solo letras, y estara en un bucle hasta que lo haga correctamente.
+// 26 lineas de codigo
 string OnlyLetters(string tipovalor) //Validacion de entrada de solo letras.
 {
     bool flagss;
@@ -118,6 +118,8 @@ string OnlyLetters(string tipovalor) //Validacion de entrada de solo letras.
 }
 
 
+//Esta funcion es similar a la anterior solo que  este caso solo validara numeros
+// 38 lineas de codigo
 float OnlyNums(string tipodato)//validacion de entrada de solo numeros
 {
     bool flagss=true;
@@ -148,7 +150,9 @@ float OnlyNums(string tipodato)//validacion de entrada de solo numeros
     return valor;
 }
 
-string TipoDeEnfermedad(char logs)//funcion  para mandar que tipo de enfermedad presenta el usuario cuando se imprimen los datos, o se quiere saber por separado
+//funcion  para mandar que tipo de enfermedad presenta el usuario cuando se imprimen los datos, o se quiere saber por separado que  tipo de enfermedad presenta
+//31 lineas de codigo
+string TipoDeEnfermedad(char logs)
 {
     string enfer;
     int lm;
@@ -181,6 +185,8 @@ string TipoDeEnfermedad(char logs)//funcion  para mandar que tipo de enfermedad 
     return enfer;
 }
 
+//Muestra el tipo de lesion que presenta el usuario
+//36 lineas de codigo
 string TipoDeFractura(char logs)
 {
     string frac;
@@ -219,7 +225,9 @@ string TipoDeFractura(char logs)
     return frac;
 }
 
-void MostrarDatos(User u) //cada que se  llama, solo mostrara los datos del usuario
+//Solo muestra en pantalla los datos del usuario, recibe como parametro un objeto User
+//12 lineas de codigo
+void MostrarDatos(User u)
 {
             std::cout<<"Tu informacion es la siguiente: "<<std::endl;
             cout<<"Nombre: "<< u.getName() <<endl;
@@ -233,7 +241,10 @@ void MostrarDatos(User u) //cada que se  llama, solo mostrara los datos del usua
             cout<<"IMC: "<< (u.getPassword() )<<endl;
 }
 
-bool SiNo(string lees) //funcion para la eleccion  de si o no, ejemplo si desea realizar algun cambio
+
+//Funcion para Determinar   la eleccion de si o no, marcada por el usuario, recibe como parametro un string previamente leido, y devuelve un  dato de tipo bool, para seguir operando
+//23 lineas de codigo
+bool SiNo(string lees)
 {
     bool flag, tiene;
     char condiciontype;
@@ -258,6 +269,9 @@ bool SiNo(string lees) //funcion para la eleccion  de si o no, ejemplo si desea 
      return tiene;
 }
 
+//Funcion que recibe un string leido, y un numero que define las opciones correctas que presenta un menu, devuelve un valor tipo booleano, dependiendo  si ingreso una opcion valida o no
+//este se determina con valores  de la tabla ascci.
+//33 lineas de codigo
 bool OpcionesValidas(string opc, int ascci)
 {
     bool rep;
@@ -281,7 +295,6 @@ bool OpcionesValidas(string opc, int ascci)
             rep=true;
         }
         else  rep=false;
-
     }
     else
         {
@@ -294,7 +307,9 @@ bool OpcionesValidas(string opc, int ascci)
     return rep;
 }
 
-
+// muestra en pantalla, un menu de opciones previamente pasado por un string, y el numerod e opciones validas, determina mediante la funcion anterior si  tiene una opcionvalida o no
+//en caso de que no, seguira en el do while, hasta que marque una opcion valida.
+//11 lineas de codigo
 char MenusDeOpciones(string opciones, int asci)
 {
     char opcion;
@@ -308,6 +323,9 @@ char MenusDeOpciones(string opciones, int asci)
     return opcion;
 }
 
+//Funcion que determina si el usuario tiene una enfermedad, llama dos funciones, la primera que valida si tiene o no una enfermedad,
+//la segunda funcion que llama, determina que tipo de enfermedad tiene.
+//12 lineas de ocdigo
 char Enfermedad()
 {
     string enfermedades;
@@ -322,6 +340,8 @@ char Enfermedad()
     return logs;
 }
 
+//Es una funcion muy similar a la anterior, pero en este caso determina  si tiene o no tiene lesion, y que  tipo de  lesion tiene.
+//10 lineas de codigo
 char Lesion()
 {
     string lesiones;
@@ -334,6 +354,8 @@ char Lesion()
     return logs;
 }
 
+//esta funcion devuelve un string, que determina y lee del usuario la contrasenia que  quiere poner el usuario, y  compara para que este seguro de poner esa contrasenia
+//28 lineas de codigo
 string Pass()
 {
     string password,cpassword;
@@ -364,6 +386,9 @@ string Pass()
     return password;
 }
 
+//Esta funcion, le pide al usuario si desea hacer cambios a los datos que puso, previamente, se ejecuta cada vez que se registra el usuario
+//si se llego a equivocar,  y cuando inicia sesion, por si quiere cambiar algun parametro
+//53 lineas de codigo
 void Cambios(int id)
 {
     bool flag,validar;
@@ -371,9 +396,7 @@ void Cambios(int id)
     string name, cpassword;
     float peso, altura;
     int edad;
-    flag=SiNo("Desea Realizar algun cambio ");
-
-        if(flag)
+    while(SiNo("Desea Realizar algun cambio? "))
         {
             cambiar=MenusDeOpciones("Que paranetro quieres cambar?\n[1] Nombre \n[2] Peso \n[3] Edad \n[4] Enfermedad \n[5] Lesion \n[6] Altura \n[7] Password ", 55 );
             switch(cambiar)
@@ -413,13 +436,13 @@ void Cambios(int id)
                     users[id].setPassword(cpassword);
                     break;
             }
-
+            MostrarDatos(users[id]);
             saveUsersToFile(users, "usuariosdata.txt");
             system("pause");
         }
-        MostrarDatos(users[id]);
 
 }
+
 
 void RutinaGuardar(char lesioon, char enfermedd)
 {
@@ -433,7 +456,9 @@ void RutinaMostrar()
 }
 
 
-void Registro_User() //funcion para registrar usuario donde pedira sus datos
+//Registro de un usuario, donde pedira sus daros
+//40 lineas de codigo
+void Registro_User()
 {
         std:: string name,  password,  cpassword,sexo;
         char condiciontype, sex, enfermedades, lesiones;
@@ -458,7 +483,6 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
                 else flag=false;
 
         }while(flag);
-
         enfermedades= Enfermedad();
         lesiones= Lesion();
         system("cls");
@@ -476,6 +500,8 @@ void Registro_User() //funcion para registrar usuario donde pedira sus datos
         saveUsersToFile(users, "usuariosdata.txt");
 }
 
+//Funcion para que realice su loggin el usuario.
+// 31 lineas de codigo
 void Login_user()
 {
     string nombre;
@@ -499,8 +525,8 @@ void Login_user()
                 }
                 else
                     band=false;
-
             }while(band);
+            Cambios(i);
             break;
         }
         if(i==users.size()-1)
@@ -511,6 +537,9 @@ void Login_user()
     }
 }
 
+
+//Muestra el menu de inicio
+//14 lineas de codigo
 char Menu_Inicio()
 {
         int lm=0;
@@ -527,6 +556,7 @@ char Menu_Inicio()
     return lm;
 }
 
+//Funcion main del codigo, empieza a leer un archivo. da 3 opciones para el usuario, y una cuarta para hacer testeos del codgio, solo para el programador.
 int main()
     {
         bool reps=true;
@@ -572,3 +602,4 @@ int main()
         while(reps);
 
     }
+

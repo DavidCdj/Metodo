@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 
-
+//Clase usuario, se utiliza para generar al usuario como objeto, y tiene sus metodos getters y setters,
 class User
 {
     //atributos
