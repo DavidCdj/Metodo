@@ -160,93 +160,26 @@ float OnlyNums(string tipodato)//validacion de entrada de solo numeros
     return valor;
 }
 
-//funcion  para mandar que tipo de enfermedad presenta el usuario cuando se imprimen los datos, o se quiere saber por separado que  tipo de enfermedad presenta
-//31 lineas de codigo
-string TipoDeEnfermedad(char logs)
-{
-    string enfer;
-    int lm;
-    try{
-        lm = int(logs);
-    }catch(std::exception& e){cout<<"Nose guardo correctamente"<<endl;}
-    switch (lm)
-            {
-                case 48:
-                    enfer="NP";
-                break;
-
-                case 49:
-                    enfer="Cardiaca";
-                break;
-
-                case 50:
-                    enfer="Pulmonar";
-
-                break;
-
-                case 51:
-                    enfer="Artritis";
-                    break;
-
-                case 52:
-                    enfer="Cardiovascular";
-                break;
-            }
-    return enfer;
-}
-
-//Muestra el tipo de lesion que presenta el usuario
-//36 lineas de codigo
-string TipoDeFractura(char logs)
-{
-    string frac;
-    int lm;
-    try{
-        lm = int(logs);
-    }catch(std::exception& e){cout<<"Nose guardo correctamente"<<endl;}
-    switch (lm)
-            {
-                case 48:
-                    frac="NP";
-                break;
-
-                case 49:
-                    frac="Hombro";
-                break;
-
-                case 50:
-                    frac="Piernas";
-
-                break;
-
-                case 51:
-                    frac=" Brazos";
-                    break;
-
-                case 52:
-                    frac="Espalda";
-                    break;
-
-                case 53:
-                    frac="Pies";
-                break;
-            }
-
-    return frac;
-}
-
 //Solo muestra en pantalla los datos del usuario, recibe como parametro un objeto User
 //12 lineas de codigo
 void MostrarDatos(User u)
 {
+    vector <string>enfert={"NP","Cardiaca","Pulmonar","Artritis","Cardiovascular"};;
+    vector <string> lesszone = {"NP","Hombro","Piernas","Espalda","Pies"};
+    string l,e;
+    int x,y;
+            e=u.getEnfermedades();
+            y=stoi(e);
+            l=u.getLesiones();
+            x=stoi(l);
             std::cout<<"Tu informacion es la siguiente: "<<std::endl;
             cout<<"Nombre: "<< u.getName() <<endl;
             cout<<"Edad:  "<<u.getEdad() <<endl;
             cout<<"Peso:  "<<u.getPeso()<<endl;
             cout<<"Altura:  "<<u.getAltura()<<endl;
             cout<<"Sexo:  "<<u.getSexo()<<endl;
-            cout<<"Enfermedades:  "<<TipoDeEnfermedad(u.getEnfermedades())<<endl;
-            cout<<"Lesiones:  "<<TipoDeFractura(u.getLesiones())<<endl;
+            cout<<"Enfermedades:  "<<enfert[y]<<endl;
+            cout<<"Lesiones:  "<<lesszone[x]<<endl;
             cout<<"IMC: "<< (u.getPeso()/(u.getAltura()*u.getAltura()) )<<endl;
 }
 
@@ -451,9 +384,9 @@ void Cambios(int id)
             saveUsersToFile(users, "usuariosdata.txt");
             system("pause");
         }
-
 }
 
+//Dependiendo que dia de la semana devolvera false o true, que servira para ver si es dia de descanso o de entrenamiento;
 bool DiaSem(int day)
 {
     bool flag;
@@ -463,17 +396,63 @@ bool DiaSem(int day)
     return flag;
 }
 
-void Gym_day()
+
+bool TipoDeEnfermedad(int id )
+{
+    bool enfer;
+    if((int) users[id].getEnfermedades()==48)
+
+        enfer=true;
+
+
+    else enfer=false;
+
+
+    return enfer;
+}
+
+string TipoDeFractura(int id)
+{
+    string frac;
+
+    return frac;
+}
+
+
+//Funcion que arma la rutina para el usuario, como parametro el indice donde se encunetra el usuario
+void Gym_day(int id)
 {
     //indica que dia de la semana nos encontradmos
     int day;
-    string pref;
+    char pref;
     time_t now=time(0);
     tm * time=localtime(&now);
     day=time-> tm_wday;
-    //day=3;
+    day=3;
     if(DiaSem(day)){
         pref=MenusDeOpciones("Como prefieres trabajar \n[1]Peso libre \n[2]Maquinas \n [3]Ambas", 51);
+        switch(pref)
+        {
+            case 49:
+                {
+                    TipoDeEnfermedad(id);
+
+                }
+            break;
+            case 50:
+                {
+
+
+                }
+            break;
+            case 51:
+                {
+
+
+                }
+            break;
+
+        }
     }
     else{
         system("cls");
@@ -555,7 +534,7 @@ void Login_user()
                     band=false;
             }while(band);
             Cambios(i);
-            Gym_day();
+            Gym_day(i);
             break;
         }
         if(i==users.size()-1)
@@ -617,10 +596,12 @@ int main()
 
                 case 4:
                 {
-                    Gym_day();
+                    Gym_day(0);
                     /* int a = rand() % 10;
                     cout<<a;
                     system("pause");*/
+                    //MostrarDatos(users[0]);
+                    system("pause");
 
                 }
                 break;
