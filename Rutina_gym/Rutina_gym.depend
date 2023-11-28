@@ -17,7 +17,7 @@
 1697230327 c:\users\david\videos\rutina_gym\include\user.h
 	<string>
 
-1701059504 source:c:\users\david\videos\repogitprograma\metodo\rutina_gym\main.cpp
+1701150414 source:c:\users\david\videos\repogitprograma\metodo\rutina_gym\main.cpp
 	<iostream>
 	<stdio.h>
 	<stdlib.h>
@@ -26,6 +26,7 @@
 	<fstream>
 	<vector>
 	<string.h>
+	<ctime>
 	"User.h"
 
 1701059120 c:\users\david\videos\repogitprograma\metodo\rutina_gym\include\user.h
