@@ -12,6 +12,7 @@
 using namespace std;
 vector <User> users; //Es un vector que contiene  objetos de tipo  User
 vector<string> dia_semana;
+//vector <string> ejercicios={"Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"}; vector que dice que dia es, solo se ocuapara en caso de que lo vemaos necesario
 
 //Funcion para guardar los usuarios resgistrados en un archivo. tiene 36 lienas de codigo,
 void saveUsersToFile(std::vector<User> use, const char* filename)
@@ -210,24 +211,24 @@ string TipoDeFractura(char logs)
                 break;
 
                 case 49:
-                    frac="Fractura";
+                    frac="Hombro";
                 break;
 
                 case 50:
-                    frac="Dislocacion";
+                    frac="Piernas";
 
                 break;
 
                 case 51:
-                    frac="Esguince";
+                    frac=" Brazos";
                     break;
 
                 case 52:
-                    frac="Desgarro";
+                    frac="Espalda";
                     break;
 
                 case 53:
-                    frac="Tendinitis";
+                    frac="Pies";
                 break;
             }
 
@@ -323,6 +324,7 @@ char MenusDeOpciones(string opciones, int asci)
     char opcion;
     string vl;
     do{
+            system("cls");
             cout<<opciones<<endl;
             cin>>opcion;
             cin.ignore();
@@ -357,7 +359,7 @@ char Lesion()
     char logs;
     flags= SiNo("Usted presenta alguna lesión que le impida ejercitarse adecuadamente");
     if(flags)
-        logs=MenusDeOpciones("Que tipo de lesion presenta? \n[1] Fractura \n[2] Dislocacion \n[3] Esguience \n[4] Desgarre \n[5] Tendinitis ",53);
+        logs=MenusDeOpciones("En que area presenta la lesion? \n[1] Hombro \n[2] Piernas \n[3] Brazos \n[4] Espalda \n[5] Pies ",53);
     else {logs='0';}
     return logs;
 }
@@ -452,38 +454,31 @@ void Cambios(int id)
 
 }
 
+bool DiaSem(int day)
+{
+    bool flag;
+    if(day==0 || day==2 ||day==4 || day==6)
+    flag=false;
+    else flag=true;
+    return flag;
+}
+
 void Gym_day()
 {
     //indica que dia de la semana nos encontradmos
     int day;
+    string pref;
     time_t now=time(0);
     tm * time=localtime(&now);
     day=time-> tm_wday;
-    day=0;
-    if(day==0 || day==2 ||day==4 || day==6)
-    {
+    //day=3;
+    if(DiaSem(day)){
+        pref=MenusDeOpciones("Como prefieres trabajar \n[1]Peso libre \n[2]Maquinas \n [3]Ambas", 51);
+    }
+    else{
         system("cls");
         cout<<"\n \n         Recuerda que los dias de descanso tambien son importantes\n para que tu cuerpo se recupere,  y evitemos posibles lesiones  o se intensifiquen"<<endl;
         system("pause");
-    }
-    else
-    {
-        if(day==1)
-        {
-            cout<<dia_semana[time-> tm_wday];
-            system("pause");
-
-        }
-        else if(day==3)
-        {
-            cout<<dia_semana[3];
-            system("pause");
-        }
-        else
-        {
-            cout<<dia_semana[5];
-            system("pause");
-        }
     }
 
 }
@@ -595,13 +590,6 @@ int main()
     {
         bool reps=true;
             readUsersFromFile("usuariosdata.txt");
-            dia_semana.push_back("Domingo");
-            dia_semana.push_back("Lunes");
-            dia_semana.push_back("Martes");
-            dia_semana.push_back("Miercoles");
-            dia_semana.push_back("Jueves");
-            dia_semana.push_back("Viernes");
-            dia_semana.push_back("Sabado");
     do{
          switch (Menu_Inicio())
             {
@@ -630,6 +618,10 @@ int main()
                 case 4:
                 {
                     Gym_day();
+                    /* int a = rand() % 10;
+                    cout<<a;
+                    system("pause");*/
+
                 }
                 break;
             }
@@ -639,3 +631,35 @@ int main()
 
     }
 
+/*bool DiaSem(int day)
+{
+    bool flag;
+    if(day==0 || day==2 ||day==4 || day==6)
+    {
+        system("cls");
+        cout<<"\n \n         Recuerda que los dias de descanso tambien son importantes\n para que tu cuerpo se recupere,  y evitemos posibles lesiones  o se intensifiquen"<<endl;
+        system("pause");
+    }
+    else
+    {
+        if(day==1)
+        {
+            cout<<dia_semana[time-> tm_wday];
+            system("pause");
+
+        }
+        else if(day==3)
+        {
+            cout<<dia_semana[3];
+            system("pause");
+        }
+        else
+        {
+            cout<<dia_semana[5];
+            system("pause");
+        }
+    }
+
+
+    return flag;
+}*/
