@@ -6,13 +6,14 @@
 #include <fstream> //para los archivos
 #include <vector> //sirve  para crear y usar vectores
 #include <string.h> //para utlizar strings.
+#include <ctime> //fecha y hora de dia.
 #include "User.h"
 
 using namespace std;
-vector <User> users;
+vector <User> users; //Es un vector que contiene  objetos de tipo  User
+vector<string> dia_semana;
 
 //Funcion para guardar los usuarios resgistrados en un archivo. tiene 36 lienas de codigo,
-
 void saveUsersToFile(std::vector<User> use, const char* filename)
 {
     std::ofstream outfile(filename );
@@ -58,31 +59,39 @@ void readUsersFromFile(const char* filename)
     vector<User> usuarios;
     ifstream infile(filename );
         int n;
-        infile.read((char*)&n, sizeof(int));
-        for (int i = 0; i <n; i++)
+        if(infile.fail())
+                cout<<"Error al encontrar ek archivo"<<endl;
+        else
         {
-            int edad,id, vectortam, tamaniopass;
-            float altura, peso, imc;
-            char sexo, enfermedades, lesiones;
-            infile.read((char*)&id, sizeof(int));
-            infile.read((char*)&vectortam, sizeof(int));
-            std::vector<char> bytes(vectortam);
-            infile.read(bytes.data(), bytes.size());
-            infile.read((char*)&tamaniopass, sizeof(int));
-            std::vector<char> bytpass(tamaniopass);
-            infile.read(bytpass.data(), bytpass.size());
-            infile.read((char*)&altura, sizeof(float));
-            infile.read((char*)&lesiones, sizeof(char));
-            infile.read((char*)&peso, sizeof(float));
-            infile.read((char*)&enfermedades, sizeof(char));
-            infile.read((char*)&sexo, sizeof(char));
-            infile.read((char*)&edad, sizeof(int));
-            std::string name(bytes.begin(), bytes.end());
-            std::string password(bytpass.begin(), bytpass.end());
-            User user(name, id, password,  altura, lesiones,  peso, enfermedades,   edad, sexo);
-            users.push_back(user);
+            try{
+                infile.read((char*)&n, sizeof(int));
+                for (int i = 0; i <n; i++)
+                    {
+                    int edad,id, vectortam, tamaniopass;
+                    float altura, peso, imc;
+                    char sexo, enfermedades, lesiones;
+                    infile.read((char*)&id, sizeof(int));
+                    infile.read((char*)&vectortam, sizeof(int));
+                    std::vector<char> bytes(vectortam);
+                    infile.read(bytes.data(), bytes.size());
+                    infile.read((char*)&tamaniopass, sizeof(int));
+                    std::vector<char> bytpass(tamaniopass);
+                    infile.read(bytpass.data(), bytpass.size());
+                    infile.read((char*)&altura, sizeof(float));
+                    infile.read((char*)&lesiones, sizeof(char));
+                    infile.read((char*)&peso, sizeof(float));
+                    infile.read((char*)&enfermedades, sizeof(char));
+                    infile.read((char*)&sexo, sizeof(char));
+                    infile.read((char*)&edad, sizeof(int));
+                    std::string name(bytes.begin(), bytes.end());
+                    std::string password(bytpass.begin(), bytpass.end());
+                    User user(name, id, password,  altura, lesiones,  peso, enfermedades,   edad, sexo);
+                    users.push_back(user);
+                }
+                infile.close();
+            }catch(std::bad_alloc& e){}
         }
-    infile.close();
+
 }
 
 
@@ -238,7 +247,6 @@ void MostrarDatos(User u)
             cout<<"Enfermedades:  "<<TipoDeEnfermedad(u.getEnfermedades())<<endl;
             cout<<"Lesiones:  "<<TipoDeFractura(u.getLesiones())<<endl;
             cout<<"IMC: "<< (u.getPeso()/(u.getAltura()*u.getAltura()) )<<endl;
-            cout<<"IMC: "<< (u.getPassword() )<<endl;
 }
 
 
@@ -428,6 +436,7 @@ void Cambios(int id)
 
                 case 54:
                     altura=OnlyNums("Altura");
+                    if(altura>2)altura=altura/100;
                     users[id].setAltura(altura);
                     break;
 
@@ -443,15 +452,39 @@ void Cambios(int id)
 
 }
 
-
-void RutinaGuardar(char lesioon, char enfermedd)
+void Gym_day()
 {
+    //indica que dia de la semana nos encontradmos
+    int day;
+    time_t now=time(0);
+    tm * time=localtime(&now);
+    day=time-> tm_wday;
+    day=0;
+    if(day==0 || day==2 ||day==4 || day==6)
+    {
+        system("cls");
+        cout<<"\n \n         Recuerda que los dias de descanso tambien son importantes\n para que tu cuerpo se recupere,  y evitemos posibles lesiones  o se intensifiquen"<<endl;
+        system("pause");
+    }
+    else
+    {
+        if(day==1)
+        {
+            cout<<dia_semana[time-> tm_wday];
+            system("pause");
 
-
-}
-
-void RutinaMostrar()
-{
+        }
+        else if(day==3)
+        {
+            cout<<dia_semana[3];
+            system("pause");
+        }
+        else
+        {
+            cout<<dia_semana[5];
+            system("pause");
+        }
+    }
 
 }
 
@@ -470,6 +503,7 @@ void Registro_User()
         edad=OnlyNums("Edad");
         peso=OnlyNums("Peso");
         altura=OnlyNums("Altura");
+        if(altura>2)altura=altura/100;
         do{
                 cout<<"Ingresa tu sexo: \n [H]Hombre \n [M]Mujer "<<endl;
                 cin>>sex;
@@ -481,7 +515,6 @@ void Registro_User()
                     flag=true;
                 }
                 else flag=false;
-
         }while(flag);
         enfermedades= Enfermedad();
         lesiones= Lesion();
@@ -527,6 +560,7 @@ void Login_user()
                     band=false;
             }while(band);
             Cambios(i);
+            Gym_day();
             break;
         }
         if(i==users.size()-1)
@@ -561,6 +595,13 @@ int main()
     {
         bool reps=true;
             readUsersFromFile("usuariosdata.txt");
+            dia_semana.push_back("Domingo");
+            dia_semana.push_back("Lunes");
+            dia_semana.push_back("Martes");
+            dia_semana.push_back("Miercoles");
+            dia_semana.push_back("Jueves");
+            dia_semana.push_back("Viernes");
+            dia_semana.push_back("Sabado");
     do{
          switch (Menu_Inicio())
             {
@@ -588,18 +629,13 @@ int main()
 
                 case 4:
                 {
-                    for(int i=0;i<users.size();i++)
-                    {
-                        MostrarDatos(users[i]);
-                        Cambios(i);
-                        system("pause");
-                    }
+                    Gym_day();
                 }
-
                 break;
             }
         }
         while(reps);
+        return 0;
 
     }
 
