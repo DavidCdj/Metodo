@@ -396,26 +396,128 @@ bool DiaSem(int day)
     return flag;
 }
 
-
-bool TipoDeEnfermedad(int id )
+//identifica si tiene alguna enfermedad
+bool TieneEnfermedad(int id )
 {
     bool enfer;
     if((int) users[id].getEnfermedades()==48)
-
         enfer=true;
 
-
     else enfer=false;
-
 
     return enfer;
 }
 
-string TipoDeFractura(int id)
+//Identifica  si tiene una lession o no.
+bool TieneLesion(int id)
 {
-    string frac;
+    bool enfer;
+    if((int) users[id].getLesiones()==48)
+        enfer=true;
 
-    return frac;
+    else enfer=false;
+
+    return enfer;
+}
+
+//imprime en pantalla los ejercicios de  estiramiento
+void Estiramiento()
+{
+    system("cls");
+    cout<<"------------Estiramiento-----------"<<endl;
+    cout<<"1. Cada ejercicio de  estiramiento debe de durar  8 segundos"<<endl;
+    cout<<"2. Mueve la cabeza arriba y abajo "<<endl;
+    cout<<"3. Mueve la cabez a los lados"<<endl;
+    cout<<"4. Alterna abriendo  y cerrando los brazos"<<endl;
+    cout<<"5. Manten los brazos estirados y gira las muniecas a un lado y luego al otro"<<endl;
+    cout<<"6. Gira la cadera en circulos"<<endl;
+    cout<<"7. Separa un poco  las piernas y toca tus rodillas  con mano contraria\n (Si puedes hazlo a la punta de tus pies )"<<endl;
+    system("pause");
+}
+
+//imprime en pantalla ejercicio de calentamiento
+void Calentamiento(int id)
+{
+    if(TieneEnfermedad(id))
+    {
+        system("cls");
+        cout<<"-----Calentamiento-----"<<endl;
+        cout<<"\nNota: Los ejercicios de calentamiento, son sugerencias \n no realices todas solo uno por dia."<<endl;
+        cout<<"Entre 10 y 15 minutos, depende de como te sientas."<<endl;
+        cout<<"1. Trotar en la caminadora"<<endl;
+        cout<<"2. Escaladora,"<<endl;
+        cout<<"3. Eliptica"<<endl;
+        cout<<"4. Bicicleta"<<endl;
+        cout<<"5. Saltar la cuerda"<<endl;
+        system("pause");
+
+    }
+    else{
+          system("cls");
+        cout<<"----------Calentamiento----------"<<endl;
+        cout<<"\nNota: Los ejercicios de calentamiento, son sugerencias \n no realices todas solo uno por dia."<<endl;
+        cout<<"Solo realiza 10 minutos  de un ejercicio, con una leve intensidad,\n recuerda ir a tu ritmo y escuchar tu cuerpo\n"<<endl;
+        cout<<"1. Caminar  sea en caminadora o al aire libre"<<endl;
+        cout<<"2. Eliptica"<<endl;
+        cout<<"3. Bicicleta"<<endl;
+
+        system("cls");
+
+
+    }
+}
+void rutinapesolibre(vector<string> pesolibre, int xd, int cre){
+
+    int i=0,a=0;
+    system("cls");
+    cout<<"----------Entrenamiento----------"<<endl;
+    while(i<6)
+    {
+        int ran =a + rand() % 5;
+        a=a+cre;
+        if(a<31)
+        {
+            if(ran!=(0+xd) ||ran!=(1+xd) || ran!=(2+xd) || ran!=(3+xd) || ran!=(4+xd) || ran!=(5+xd))
+            {
+
+                cout<<i+1<<") "<<pesolibre[ran]<<endl;;
+                i++;
+            }
+        }
+            else a=0;
+    }
+}
+
+void rutinMachine(vector<string> pesolibre, vector<string> machine, int xd, int cre, int cree)
+{
+    int  a=6, b=0,i=0;
+    system("cls");
+    cout<<"----------Entrenamiento----------"<<endl;
+    while(i<6)
+    {
+        int ran =a + rand() % 5;
+        int rand2= b+ rand()% 3;
+
+       // a=a+cre;
+        //b=b+cree;
+        if(a<31 || b<20)
+        {
+            if(ran!=(0+xd) ||ran!=(1+xd) || ran!=(2+xd) || ran!=(3+xd) || ran!=(4+xd) || ran!=(5+xd) || rand2!=(0+xd) ||rand2!=(1+xd) || rand2!=(2+xd) || rand2!=(3+xd))
+            {
+                if((i+1)%2==0)
+                {
+                    cout<<(i+1)<<") "<<pesolibre[ran]<<endl;
+                    a=a+6;
+                }
+                else{
+                    cout<<(i+1)<<") "<<machine[rand2]<<endl;
+                    b=b+8;
+                }
+                i++;
+            }
+        }
+        else {a=6; b=0;}
+    }
 }
 
 
@@ -423,43 +525,147 @@ string TipoDeFractura(int id)
 void Gym_day(int id)
 {
     //indica que dia de la semana nos encontradmos
-    int day;
+    vector <string> machine ={
+        //pierna 0 a 3
+        "Press de pierna",
+        "Extensión de cuádriceps",
+        "Flexión de isquiotibiales",
+        "Curl femoral",
+        //hombros 4 a 7
+        "Press de hombros",
+        "Elevaciones laterales",
+        "Elevaciones frontales",
+        "Elevaciones frontales con polea",
+        //espalda 8 a 11
+        "Remo con polea alta",
+        "Jalón al pecho",
+        "Jalón al pecho con agarre estrecho",
+        "Dominada asistida",
+        //pecho  12 a 15
+        "Pectoral en maquina ",
+        "Press pectoral en maquina",
+        "Aperturas con cable" ,
+        "Press de pecho con cable",
+        // brazo 16 a 19
+        "Máquina de curl de bíceps con cable en alta",
+        "Curl de bíceps con cable",
+        "Extensión de tríceps con barra",
+        "Máquina de extensión de tríceps con cable"
+    };
+
+    vector <string> pesolibre={
+        //Pierna 0 a 5
+        "Sentadillas",
+        "Zancadas",
+        "Peso muerto",
+        "Sentadillas Bulgaras",
+        "Peso muerto sumo",
+        "Elevaciones de gemelos",
+        //Hombro 6 a 11
+        "Elevaciones frontales con mancuernas",
+        "Elevaciones laterales con barra",
+        "Press de hombros con mancuernas",
+        "Press de hombros con barra",
+        "Elevaciones laterales con mancuernas",
+        "Press de hombros con mancuernas sentado",
+        //Espalda 12 a 17
+        "Remo con barra",
+        "Remo con mancuernas",
+        "Jalon al pecho",
+        "Pullover con mancuerna",
+        "Dominadas",
+        "thruster",
+        //pecho 18 a  23
+        "Press de pecho con mancuernas",
+        "Press de pecho banco inclinado con mancuerna",
+        "Press de pecho banco inclinado con barra",
+        "Press de pecho con barra",
+        "Push up",
+        "Aperturas con mancuernas",
+        //brazo 24 a30
+        "Curl de bíceps con mancuernas",
+        "Curl de bíceps con barra",
+        "Curl concentrado de bíceps",
+        "Curl de biceps con barra Z",
+        "Extensión de tríceps con mancuernas",
+        "Extensión de tríceps con barra"};
+
+
+    int day, a=6,b=0,i=0;
     char pref;
+    bool flag;
     time_t now=time(0);
     tm * time=localtime(&now);
     day=time-> tm_wday;
     day=3;
+    //int a = rand() % 10;
     if(DiaSem(day)){
-        pref=MenusDeOpciones("Como prefieres trabajar \n[1]Peso libre \n[2]Maquinas \n [3]Ambas", 51);
-        switch(pref)
+            system("cls");
+
+        if(SiNo("Prefieres trabajar con peso libre? "))
         {
-            case 49:
+            Estiramiento();
+            Calentamiento(id);
+            if(TieneLesion(id))
+            {
+                switch(users[id].getLesiones())
                 {
-                    TipoDeEnfermedad(id);
+                case 48: rutinapesolibre( pesolibre,0,6);
+                    break;
 
+                case 49:
+                        rutinapesolibre(pesolibre, 0, 6);
+                    break;
+                case 50:
+                        rutinapesolibre(pesolibre, 6, 6);
+                    break;
+                    case 51:
+                        rutinapesolibre(pesolibre, 12 , 6);
+                    break;
+                case 52:
+                     rutinapesolibre(pesolibre, 18 , 6);
+                    break;
+                case 53:
+                        rutinapesolibre(pesolibre, 24, 6);
+                    break;
                 }
-            break;
-            case 50:
-                {
-
-
-                }
-            break;
-            case 51:
-                {
-
-
-                }
-            break;
-
+            }
         }
+
+        else{
+            Estiramiento();
+            Calentamiento(id);
+            if(TieneLesion(id))
+            {
+                switch(users[id].getLesiones())
+                {
+                    case 48: rutinMachine(machine,pesolibre, 0, 6, 4);
+                        break;
+                case 49:
+                        rutinMachine(machine,pesolibre, 0, 6, 4);
+                    break;
+                case 50:
+                        rutinMachine(machine,pesolibre, 4, 6, 4);
+                    break;
+                    case 51:
+                        rutinMachine(machine,pesolibre, 8, 6, 4);
+                    break;
+                case 52:
+                        rutinMachine(machine,pesolibre, 12, 6, 4);
+                    break;
+                case 53:
+                        rutinMachine(machine,pesolibre, 16, 6, 4);
+                    break;
+                }
+            }
+        }
+
     }
     else{
         system("cls");
         cout<<"\n \n         Recuerda que los dias de descanso tambien son importantes\n para que tu cuerpo se recupere,  y evitemos posibles lesiones  o se intensifiquen"<<endl;
         system("pause");
     }
-
 }
 
 
@@ -597,9 +803,6 @@ int main()
                 case 4:
                 {
                     Gym_day(0);
-                    /* int a = rand() % 10;
-                    cout<<a;
-                    system("pause");*/
                     //MostrarDatos(users[0]);
                     system("pause");
 
@@ -609,38 +812,4 @@ int main()
         }
         while(reps);
         return 0;
-
     }
-
-/*bool DiaSem(int day)
-{
-    bool flag;
-    if(day==0 || day==2 ||day==4 || day==6)
-    {
-        system("cls");
-        cout<<"\n \n         Recuerda que los dias de descanso tambien son importantes\n para que tu cuerpo se recupere,  y evitemos posibles lesiones  o se intensifiquen"<<endl;
-        system("pause");
-    }
-    else
-    {
-        if(day==1)
-        {
-            cout<<dia_semana[time-> tm_wday];
-            system("pause");
-
-        }
-        else if(day==3)
-        {
-            cout<<dia_semana[3];
-            system("pause");
-        }
-        else
-        {
-            cout<<dia_semana[5];
-            system("pause");
-        }
-    }
-
-
-    return flag;
-}*/
