@@ -191,7 +191,7 @@ bool SiNo(string lees)
     bool flag, tiene;
     char condiciontype;
         do{
-            system("cls");
+            //system("cls");
             cout<< lees << " ? Y/N"<<endl;
             cin>> condiciontype;
             cin.ignore();
@@ -339,9 +339,11 @@ void Cambios(int id)
     string name, cpassword;
     float peso, altura;
     int edad;
+    MostrarDatos(users[id]);
+    system("pause");
     while(SiNo("Desea Realizar algun cambio? "))
         {
-            cambiar=MenusDeOpciones("Que paranetro quieres cambar?\n[1] Nombre \n[2] Peso \n[3] Edad \n[4] Enfermedad \n[5] Lesion \n[6] Altura \n[7] Password ", 55 );
+            cambiar=MenusDeOpciones("Que parametro quieres cambar?\n[1] Nombre \n[2] Peso \n[3] Edad \n[4] Enfermedad \n[5] Lesion \n[6] Altura \n[7] Password ", 55 );
             switch(cambiar)
             {
                 case 49:
@@ -413,9 +415,9 @@ bool TieneLesion(int id)
 {
     bool enfer;
     if((int) users[id].getLesiones()==48)
-        enfer=true;
+        enfer=false;
 
-    else enfer=false;
+    else enfer=true;
 
     return enfer;
 }
@@ -486,9 +488,10 @@ void rutinapesolibre(vector<string> pesolibre, int xd, int cre){
         }
             else a=0;
     }
+    system("pause");
 }
 
-void rutinMachine(vector<string> pesolibre, vector<string> machine, int xd, int cre, int cree)
+void rutinMachine(vector<string> pesolibre, vector<string> machine, int xd, int cre, int cd, int cree)
 {
     int  a=6, b=0,i=0;
     system("cls");
@@ -498,19 +501,21 @@ void rutinMachine(vector<string> pesolibre, vector<string> machine, int xd, int 
         int ran =a + rand() % 5;
         int rand2= b+ rand()% 3;
 
-       // a=a+cre;
-        //b=b+cree;
+        a=a+cre;
+        b=b+cree;
         if(a<31 || b<20)
         {
-            if(ran!=(0+xd) ||ran!=(1+xd) || ran!=(2+xd) || ran!=(3+xd) || ran!=(4+xd) || ran!=(5+xd) || rand2!=(0+xd) ||rand2!=(1+xd) || rand2!=(2+xd) || rand2!=(3+xd))
+            if(ran!=(0+xd) || ran!=(1+xd) || ran!=(2+xd) || ran!=(3+xd) || ran!=(4+xd) || ran!=(5+xd) || rand2!=(0+cd) ||rand2!=(1+cd) || rand2!=(2+cd) || rand2!=(3+cd))
             {
                 if((i+1)%2==0)
                 {
                     cout<<(i+1)<<") "<<pesolibre[ran]<<endl;
+
                     a=a+6;
                 }
                 else{
                     cout<<(i+1)<<") "<<machine[rand2]<<endl;
+
                     b=b+8;
                 }
                 i++;
@@ -518,6 +523,7 @@ void rutinMachine(vector<string> pesolibre, vector<string> machine, int xd, int 
         }
         else {a=6; b=0;}
     }
+    system("pause");
 }
 
 
@@ -597,7 +603,7 @@ void Gym_day(int id)
     time_t now=time(0);
     tm * time=localtime(&now);
     day=time-> tm_wday;
-    day=3;
+    //day=3;
     //int a = rand() % 10;
     if(DiaSem(day)){
             system("cls");
@@ -606,13 +612,12 @@ void Gym_day(int id)
         {
             Estiramiento();
             Calentamiento(id);
+
             if(TieneLesion(id))
             {
+
                 switch(users[id].getLesiones())
                 {
-                case 48: rutinapesolibre( pesolibre,0,6);
-                    break;
-
                 case 49:
                         rutinapesolibre(pesolibre, 0, 6);
                     break;
@@ -630,6 +635,7 @@ void Gym_day(int id)
                     break;
                 }
             }
+            else rutinapesolibre( pesolibre,0,6);
         }
 
         else{
@@ -637,27 +643,27 @@ void Gym_day(int id)
             Calentamiento(id);
             if(TieneLesion(id))
             {
+
                 switch(users[id].getLesiones())
                 {
-                    case 48: rutinMachine(machine,pesolibre, 0, 6, 4);
-                        break;
                 case 49:
-                        rutinMachine(machine,pesolibre, 0, 6, 4);
+                        rutinMachine(machine,pesolibre, 0, 6, 0,4);
                     break;
                 case 50:
-                        rutinMachine(machine,pesolibre, 4, 6, 4);
+                        rutinMachine(machine,pesolibre, 6, 6, 4, 4);
                     break;
                     case 51:
-                        rutinMachine(machine,pesolibre, 8, 6, 4);
+                        rutinMachine(machine,pesolibre, 12, 6, 8,4);
                     break;
                 case 52:
-                        rutinMachine(machine,pesolibre, 12, 6, 4);
+                        rutinMachine(machine,pesolibre, 18, 6, 12, 4);
                     break;
                 case 53:
-                        rutinMachine(machine,pesolibre, 16, 6, 4);
+                        rutinMachine(machine,pesolibre, 24, 6, 16,4);
                     break;
                 }
             }
+            else rutinMachine(machine,pesolibre, 0, 6, 0, 4);
         }
 
     }
@@ -739,7 +745,9 @@ void Login_user()
                 else
                     band=false;
             }while(band);
+            system("cls");
             Cambios(i);
+            system("pause");
             Gym_day(i);
             break;
         }
@@ -802,6 +810,7 @@ int main()
 
                 case 4:
                 {
+
                     Gym_day(0);
                     //MostrarDatos(users[0]);
                     system("pause");
