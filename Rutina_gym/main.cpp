@@ -11,8 +11,6 @@
 
 using namespace std;
 vector <User> users; //Es un vector que contiene  objetos de tipo  User
-vector<string> dia_semana;
-
 //Funcion para guardar los usuarios resgistrados en un archivo. tiene 36 lienas de codigo,
 void saveUsersToFile(std::vector<User> use, const char* filename)
 {
@@ -159,93 +157,26 @@ float OnlyNums(string tipodato)//validacion de entrada de solo numeros
     return valor;
 }
 
-//funcion  para mandar que tipo de enfermedad presenta el usuario cuando se imprimen los datos, o se quiere saber por separado que  tipo de enfermedad presenta
-//31 lineas de codigo
-string TipoDeEnfermedad(char logs)
-{
-    string enfer;
-    int lm;
-    try{
-        lm = int(logs);
-    }catch(std::exception& e){cout<<"Nose guardo correctamente"<<endl;}
-    switch (lm)
-            {
-                case 48:
-                    enfer="NP";
-                break;
-
-                case 49:
-                    enfer="Cardiaca";
-                break;
-
-                case 50:
-                    enfer="Pulmonar";
-
-                break;
-
-                case 51:
-                    enfer="Artritis";
-                    break;
-
-                case 52:
-                    enfer="Cardiovascular";
-                break;
-            }
-    return enfer;
-}
-
-//Muestra el tipo de lesion que presenta el usuario
-//36 lineas de codigo
-string TipoDeFractura(char logs)
-{
-    string frac;
-    int lm;
-    try{
-        lm = int(logs);
-    }catch(std::exception& e){cout<<"Nose guardo correctamente"<<endl;}
-    switch (lm)
-            {
-                case 48:
-                    frac="NP";
-                break;
-
-                case 49:
-                    frac="Fractura";
-                break;
-
-                case 50:
-                    frac="Dislocacion";
-
-                break;
-
-                case 51:
-                    frac="Esguince";
-                    break;
-
-                case 52:
-                    frac="Desgarro";
-                    break;
-
-                case 53:
-                    frac="Tendinitis";
-                break;
-            }
-
-    return frac;
-}
-
 //Solo muestra en pantalla los datos del usuario, recibe como parametro un objeto User
 //12 lineas de codigo
 void MostrarDatos(User u)
 {
+    vector <string>enfert={"NP","Cardiaca","Pulmonar","Artritis","Cardiovascular"};;
+    vector <string> lesszone = {"NP","Hombro","Piernas","Espalda","Pies"};
+    string l,e;
+    int x,y;
+            e=u.getEnfermedades();
+            y=stoi(e);
+            l=u.getLesiones();
+            x=stoi(l);
             std::cout<<"Tu informacion es la siguiente: "<<std::endl;
             cout<<"Nombre: "<< u.getName() <<endl;
             cout<<"Edad:  "<<u.getEdad() <<endl;
             cout<<"Peso:  "<<u.getPeso()<<endl;
             cout<<"Altura:  "<<u.getAltura()<<endl;
             cout<<"Sexo:  "<<u.getSexo()<<endl;
-            cout<<"Enfermedades:  "<<TipoDeEnfermedad(u.getEnfermedades())<<endl;
-            cout<<"Lesiones:  "<<TipoDeFractura(u.getLesiones())<<endl;
+            cout<<"Enfermedades:  "<<enfert[y]<<endl;
+            cout<<"Lesiones:  "<<lesszone[x]<<endl;
             cout<<"IMC: "<< (u.getPeso()/(u.getAltura()*u.getAltura()) )<<endl;
 }
 
@@ -257,7 +188,7 @@ bool SiNo(string lees)
     bool flag, tiene;
     char condiciontype;
         do{
-            system("cls");
+            //system("cls");
             cout<< lees << " ? Y/N"<<endl;
             cin>> condiciontype;
             cin.ignore();
@@ -323,6 +254,7 @@ char MenusDeOpciones(string opciones, int asci)
     char opcion;
     string vl;
     do{
+            system("cls");
             cout<<opciones<<endl;
             cin>>opcion;
             cin.ignore();
@@ -357,7 +289,7 @@ char Lesion()
     char logs;
     flags= SiNo("Usted presenta alguna lesión que le impida ejercitarse adecuadamente");
     if(flags)
-        logs=MenusDeOpciones("Que tipo de lesion presenta? \n[1] Fractura \n[2] Dislocacion \n[3] Esguience \n[4] Desgarre \n[5] Tendinitis ",53);
+        logs=MenusDeOpciones("En que area presenta la lesion? \n[1] Hombro \n[2] Piernas \n[3] Brazos \n[4] Espalda \n[5] Pies ",53);
     else {logs='0';}
     return logs;
 }
@@ -404,9 +336,11 @@ void Cambios(int id)
     string name, cpassword;
     float peso, altura;
     int edad;
+    MostrarDatos(users[id]);
+    system("pause");
     while(SiNo("Desea Realizar algun cambio? "))
         {
-            cambiar=MenusDeOpciones("Que paranetro quieres cambar?\n[1] Nombre \n[2] Peso \n[3] Edad \n[4] Enfermedad \n[5] Lesion \n[6] Altura \n[7] Password ", 55 );
+            cambiar=MenusDeOpciones("Que parametro quieres cambar?\n[1] Nombre \n[2] Peso \n[3] Edad \n[4] Enfermedad \n[5] Lesion \n[6] Altura \n[7] Password ", 55 );
             switch(cambiar)
             {
                 case 49:
@@ -449,43 +383,292 @@ void Cambios(int id)
             saveUsersToFile(users, "usuariosdata.txt");
             system("pause");
         }
-
 }
 
-void Gym_day()
+//Dependiendo que dia de la semana devolvera false o true, que servira para ver si es dia de descanso o de entrenamiento;
+bool DiaSem(int day)
+{
+    bool flag;
+    if(day==0 || day==2 ||day==4 || day==6)
+    flag=false;
+    else flag=true;
+    return flag;
+}
+
+//identifica si tiene alguna enfermedad
+bool TieneEnfermedad(int id )
+{
+    bool enfer;
+    if((int) users[id].getEnfermedades()==48)
+        enfer=true;
+
+    else enfer=false;
+
+    return enfer;
+}
+
+//Identifica  si tiene una lession o no.
+bool TieneLesion(int id)
+{
+    bool enfer;
+    if((int) users[id].getLesiones()==48)
+        enfer=false;
+
+    else enfer=true;
+
+    return enfer;
+}
+
+//imprime en pantalla los ejercicios de  estiramiento
+void Estiramiento()
+{
+    system("cls");
+    cout<<"------------Estiramiento-----------"<<endl;
+    cout<<"1. Cada ejercicio de  estiramiento debe de durar  8 segundos"<<endl;
+    cout<<"2. Mueve la cabeza arriba y abajo "<<endl;
+    cout<<"3. Mueve la cabez a los lados"<<endl;
+    cout<<"4. Alterna abriendo  y cerrando los brazos"<<endl;
+    cout<<"5. Manten los brazos estirados y gira las muniecas a un lado y luego al otro"<<endl;
+    cout<<"6. Gira la cadera en circulos"<<endl;
+    cout<<"7. Separa un poco  las piernas y toca tus rodillas  con mano contraria\n (Si puedes hazlo a la punta de tus pies )"<<endl;
+    system("pause");
+}
+
+//imprime en pantalla ejercicio de calentamiento
+void Calentamiento(int id)
+{
+    if(TieneEnfermedad(id))
+    {
+        system("cls");
+        cout<<"-----Calentamiento-----"<<endl;
+        cout<<"\nNota: Los ejercicios de calentamiento, son sugerencias \n no realices todas solo uno por dia."<<endl;
+        cout<<"Entre 10 y 15 minutos, depende de como te sientas."<<endl;
+        cout<<"1. Trotar en la caminadora"<<endl;
+        cout<<"2. Escaladora,"<<endl;
+        cout<<"3. Eliptica"<<endl;
+        cout<<"4. Bicicleta"<<endl;
+        cout<<"5. Saltar la cuerda"<<endl;
+        system("pause");
+
+    }
+    else{
+          system("cls");
+        cout<<"----------Calentamiento----------"<<endl;
+        cout<<"\nNota: Los ejercicios de calentamiento, son sugerencias \n no realices todas solo uno por dia."<<endl;
+        cout<<"Solo realiza 10 minutos  de un ejercicio, con una leve intensidad,\n recuerda ir a tu ritmo y escuchar tu cuerpo\n"<<endl;
+        cout<<"1. Caminar  sea en caminadora o al aire libre"<<endl;
+        cout<<"2. Eliptica"<<endl;
+        cout<<"3. Bicicleta"<<endl;
+
+        system("cls");
+
+
+    }
+}
+void rutinapesolibre(vector<string> pesolibre, int xd, int cre){
+
+    int i=0,a=0;
+    system("cls");
+    cout<<"----------Entrenamiento----------"<<endl;
+    while(i<6)
+    {
+        int ran =a + rand() % 5;
+        a=a+cre;
+        if(a<31)
+        {
+            if(ran!=(0+xd) ||ran!=(1+xd) || ran!=(2+xd) || ran!=(3+xd) || ran!=(4+xd) || ran!=(5+xd))
+            {
+
+                cout<<i+1<<") "<<pesolibre[ran]<<endl;;
+                i++;
+            }
+        }
+            else a=0;
+    }
+    system("pause");
+}
+
+void rutinMachine(vector<string> pesolibre, vector<string> machine, int xd, int cre, int cd, int cree)
+{
+    int  a=6, b=0,i=0;
+    system("cls");
+    cout<<"----------Entrenamiento----------"<<endl;
+    while(i<6)
+    {
+        int ran =a + rand() % 5;
+        int rand2= b+ rand()% 3;
+
+        a=a+cre;
+        b=b+cree;
+        if(a<31 || b<20)
+        {
+            if(ran!=(0+xd) || ran!=(1+xd) || ran!=(2+xd) || ran!=(3+xd) || ran!=(4+xd) || ran!=(5+xd) || rand2!=(0+cd) ||rand2!=(1+cd) || rand2!=(2+cd) || rand2!=(3+cd))
+            {
+                if((i+1)%2==0)
+                {
+                    cout<<(i+1)<<") "<<pesolibre[ran]<<endl;
+
+                    a=a+6;
+                }
+                else{
+                    cout<<(i+1)<<") "<<machine[rand2]<<endl;
+
+                    b=b+8;
+                }
+                i++;
+            }
+        }
+        else {a=6; b=0;}
+    }
+    system("pause");
+}
+
+
+//Funcion que arma la rutina para el usuario, como parametro el indice donde se encunetra el usuario
+void Gym_day(int id)
 {
     //indica que dia de la semana nos encontradmos
-    int day;
+    vector <string> machine ={
+        //pierna 0 a 3
+        "Press de pierna",
+        "Extensión de cuádriceps",
+        "Flexión de isquiotibiales",
+        "Curl femoral",
+        //hombros 4 a 7
+        "Press de hombros",
+        "Elevaciones laterales",
+        "Elevaciones frontales",
+        "Elevaciones frontales con polea",
+        //espalda 8 a 11
+        "Remo con polea alta",
+        "Jalón al pecho",
+        "Jalón al pecho con agarre estrecho",
+        "Dominada asistida",
+        //pecho  12 a 15
+        "Pectoral en maquina ",
+        "Press pectoral en maquina",
+        "Aperturas con cable" ,
+        "Press de pecho con cable",
+        // brazo 16 a 19
+        "Máquina de curl de bíceps con cable en alta",
+        "Curl de bíceps con cable",
+        "Extensión de tríceps con barra",
+        "Máquina de extensión de tríceps con cable"
+    };
+
+    vector <string> pesolibre={
+        //Pierna 0 a 5
+        "Sentadillas",
+        "Zancadas",
+        "Peso muerto",
+        "Sentadillas Bulgaras",
+        "Peso muerto sumo",
+        "Elevaciones de gemelos",
+        //Hombro 6 a 11
+        "Elevaciones frontales con mancuernas",
+        "Elevaciones laterales con barra",
+        "Press de hombros con mancuernas",
+        "Press de hombros con barra",
+        "Elevaciones laterales con mancuernas",
+        "Press de hombros con mancuernas sentado",
+        //Espalda 12 a 17
+        "Remo con barra",
+        "Remo con mancuernas",
+        "Jalon al pecho",
+        "Pullover con mancuerna",
+        "Dominadas",
+        "thruster",
+        //pecho 18 a  23
+        "Press de pecho con mancuernas",
+        "Press de pecho banco inclinado con mancuerna",
+        "Press de pecho banco inclinado con barra",
+        "Press de pecho con barra",
+        "Push up",
+        "Aperturas con mancuernas",
+        //brazo 24 a30
+        "Curl de bíceps con mancuernas",
+        "Curl de bíceps con barra",
+        "Curl concentrado de bíceps",
+        "Curl de biceps con barra Z",
+        "Extensión de tríceps con mancuernas",
+        "Extensión de tríceps con barra"};
+
+
+    int day, a=6,b=0,i=0;
+    char pref;
+    bool flag;
     time_t now=time(0);
     tm * time=localtime(&now);
     day=time-> tm_wday;
-    day=0;
-    if(day==0 || day==2 ||day==4 || day==6)
-    {
+    //day=3;
+    //int a = rand() % 10;
+    if(DiaSem(day)){
+            system("cls");
+
+        if(SiNo("Prefieres trabajar con peso libre? "))
+        {
+            Estiramiento();
+            Calentamiento(id);
+
+            if(TieneLesion(id))
+            {
+
+                switch(users[id].getLesiones())
+                {
+                case 49:
+                        rutinapesolibre(pesolibre, 0, 6);
+                    break;
+                case 50:
+                        rutinapesolibre(pesolibre, 6, 6);
+                    break;
+                    case 51:
+                        rutinapesolibre(pesolibre, 12 , 6);
+                    break;
+                case 52:
+                     rutinapesolibre(pesolibre, 18 , 6);
+                    break;
+                case 53:
+                        rutinapesolibre(pesolibre, 24, 6);
+                    break;
+                }
+            }
+            else rutinapesolibre( pesolibre,0,6);
+        }
+
+        else{
+            Estiramiento();
+            Calentamiento(id);
+            if(TieneLesion(id))
+            {
+
+                switch(users[id].getLesiones())
+                {
+                case 49:
+                        rutinMachine(machine,pesolibre, 0, 6, 0,4);
+                    break;
+                case 50:
+                        rutinMachine(machine,pesolibre, 6, 6, 4, 4);
+                    break;
+                    case 51:
+                        rutinMachine(machine,pesolibre, 12, 6, 8,4);
+                    break;
+                case 52:
+                        rutinMachine(machine,pesolibre, 18, 6, 12, 4);
+                    break;
+                case 53:
+                        rutinMachine(machine,pesolibre, 24, 6, 16,4);
+                    break;
+                }
+            }
+            else rutinMachine(machine,pesolibre, 0, 6, 0, 4);
+        }
+
+    }
+    else{
         system("cls");
         cout<<"\n \n         Recuerda que los dias de descanso tambien son importantes\n para que tu cuerpo se recupere,  y evitemos posibles lesiones  o se intensifiquen"<<endl;
         system("pause");
     }
-    else
-    {
-        if(day==1)
-        {
-            cout<<dia_semana[time-> tm_wday];
-            system("pause");
-
-        }
-        else if(day==3)
-        {
-            cout<<dia_semana[3];
-            system("pause");
-        }
-        else
-        {
-            cout<<dia_semana[5];
-            system("pause");
-        }
-    }
-
 }
 
 
@@ -559,8 +742,10 @@ void Login_user()
                 else
                     band=false;
             }while(band);
+            system("cls");
             Cambios(i);
-            Gym_day();
+            system("pause");
+            Gym_day(i);
             break;
         }
         if(i==users.size()-1)
@@ -595,13 +780,7 @@ int main()
     {
         bool reps=true;
             readUsersFromFile("usuariosdata.txt");
-            dia_semana.push_back("Domingo");
-            dia_semana.push_back("Lunes");
-            dia_semana.push_back("Martes");
-            dia_semana.push_back("Miercoles");
-            dia_semana.push_back("Jueves");
-            dia_semana.push_back("Viernes");
-            dia_semana.push_back("Sabado");
+            vector<string> dia_semana={"Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"};
     do{
          switch (Menu_Inicio())
             {
@@ -609,6 +788,10 @@ int main()
                     {
                         system("cls");
                         Login_user();
+                        system("cls");
+                        cout<<"Buen trabajo, nos vemos en el siguiente entrenamiento :3"<<endl;
+                        system("pause");
+                        reps=false;
                     }
                 break;
 
@@ -629,13 +812,15 @@ int main()
 
                 case 4:
                 {
-                    Gym_day();
+
+                    Gym_day(0);
+                    //MostrarDatos(users[0]);
+                    system("pause");
+
                 }
                 break;
             }
         }
         while(reps);
         return 0;
-
     }
-
