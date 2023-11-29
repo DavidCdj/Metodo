@@ -11,9 +11,6 @@
 
 using namespace std;
 vector <User> users; //Es un vector que contiene  objetos de tipo  User
-vector<string> dia_semana;
-//vector <string> ejercicios={"Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"}; vector que dice que dia es, solo se ocuapara en caso de que lo vemaos necesario
-
 //Funcion para guardar los usuarios resgistrados en un archivo. tiene 36 lienas de codigo,
 void saveUsersToFile(std::vector<User> use, const char* filename)
 {
@@ -783,6 +780,7 @@ int main()
     {
         bool reps=true;
             readUsersFromFile("usuariosdata.txt");
+            vector<string> dia_semana={"Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"};
     do{
          switch (Menu_Inicio())
             {
@@ -790,6 +788,10 @@ int main()
                     {
                         system("cls");
                         Login_user();
+                        system("cls");
+                        cout<<"Buen trabajo, nos vemos en el siguiente entrenamiento :3"<<endl;
+                        system("pause");
+                        reps=false;
                     }
                 break;
 
